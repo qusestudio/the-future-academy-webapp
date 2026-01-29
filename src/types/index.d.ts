@@ -39,6 +39,7 @@ declare global {
   }
 
   interface User {
+    userInfo: any;
     cognitoInfo: AuthUser;
     // userInfo: Student | Instructor;
     userRole: JsonObject | JsonPrimitive | JsonArray;
