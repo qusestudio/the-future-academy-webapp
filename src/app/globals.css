@@ -4,6 +4,31 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
+
+    --color-primary-50: #fcfcfc;
+    --color-primary-100: #f1f1f2;
+    --color-primary-200: #e0e0e2;
+    --color-primary-300: #c7c7cc;
+    --color-primary-400: #a8a8af;
+    --color-primary-500: #82828b;
+    --color-primary-600: #57575f;
+    --color-primary-700: #27272a;
+    --color-primary-800: #111113;
+    --color-primary-900: #040405;
+    --color-primary-950: #000000;
+
+    --color-secondary-50: #fefdfb;
+    --color-secondary-100: #fef9e7;
+    --color-secondary-200: #fef3c7;
+    --color-secondary-300: #fde68a;
+    --color-secondary-400: #fcd34d;
+    --color-secondary-500: #fbbf24;
+    --color-secondary-600: #f59e0b;
+    --color-secondary-700: #d97706;
+    --color-secondary-800: #92400e;
+    --color-secondary-900: #78350f;
+    --color-secondary-950: #451a03;
+
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
@@ -123,3 +148,105 @@
     @apply bg-background text-foreground;
   }
 }
+
+
+[data-amplify-authenticator] [data-amplify-container] {
+    border-radius: var(--radius);
+    @apply w-full p-10 flex flex-col;
+    border: 1px solid hsl(var(--border));
+}
+
+/* Sign up form fields */
+[data-amplify-authenticator] fieldset.amplify-flex {
+    @apply w-full max-w-sm;
+}
+
+/* Amplify Sign In Form */
+[data-amplify-authenticator] div.amplify-flex {
+    @apply w-full max-w-sm;
+}
+
+/* Amplify Form Labels*/
+[data-amplify-authenticator] label.amplify-label {
+    @apply text-sm font-medium;
+}
+
+[data-amplify-authenticator] [data-amplify-form] {
+    @apply flex justify-center
+}
+
+[data-amplify-authenticator] [data-variation] {
+    @apply w-full  flex justify-center;
+}
+
+
+[data-amplify-authenticator] .amplify-fieldset__legend {
+    @apply text-sm font-medium mt-4;
+}
+
+[data-amplify-authenticator] .amplify-radiogroupfield {
+    @apply mt-1 flex flex-col gap-y-1;
+}
+
+/* Amplify Sing Up Form: Hide Legend Label */
+[data-amplify-authenticator] legend.amplify-visually-hidden {
+    @apply hidden;
+}
+
+/* Amplify Sign Up Form: Gap Between Roles */
+[data-amplify-authenticator] div.flex.flex-col.text-sm.items-start {
+    @apply gap-y-1;
+}
+
+/* Amplify Sign Up Form:  */
+[data-amplify-authenticator] span.amplify-visually-hidden {
+    @apply hidden
+}
+
+[data-amplify-authenticator] div.amplify-field-group--horizontal {
+    @apply flex items-center justify-stretch border rounded-sm p-0 w-full;
+}
+
+[data-amplify-authenticator] .amplify-textfield {
+    @apply mt-4 flex flex-col gap-y-2;
+}
+
+/* Cognito Input Field */
+[data-amplify-authenticator]  input.amplify-field-group__control {
+    /*padding: 1rem !important;*/
+    @apply p-2 w-full ;
+    @apply rounded-sm text-sm;
+}
+
+[data-amplify-authenticator] .amplify-field-group__outer-end {
+    @apply h-full w-full px-2 flex flex-1;
+}
+
+[data-amplify-authenticator] .amplify-field-group__field-wrapper {
+    margin: 0 !important;
+    padding: 0 !important;
+    @apply w-full flex items-stretch justify-stretch h-full;
+}
+
+[data-amplify-authenticator] .amplify-tabs__list {
+    display: none;
+}
+
+[data-amplify-authenticator] .amplify-button--primary {
+    height: 2.75rem;
+    margin-top: 1rem;
+    /*background-color: hsl(var(--primary)) !important;*/
+    @apply bg-secondary-400;
+    color: hsl(var(--primary-foreground)) !important;
+    @apply font-medium;
+    @apply w-full  text-sm rounded;
+}
+
+[data-amplify-authenticator] .amplify-button--primary:hover {
+    background-color: hsl(var(--primary) / 0.8) !important;
+}
+
+[data-amplify-authenticator] p.text-muted-foreground {
+    @apply text-sm
+}
+

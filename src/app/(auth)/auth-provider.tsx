@@ -17,19 +17,24 @@ Amplify.configure({
 const components = {
     Header() {
         return (
-            <View className={"mt-4 mb-7"}>
-                <Heading level={3} className="!text-2xl !font-bold">
-                    RENT
-                    <span className="text-secondary-500 font-light hover:!text-primary-300">
-                        IFUL
+            <div className="w-full flex justify-center">
+                <View className="max-w-sm w-full">
+                    <View className={"mt-4 mb-7"}>
+                        <Heading level={3} className="!text-2xl  !font-bold">
+                            TheFuture
+                            <span className="text-secondary-500 font-light hover:!text-primary-300">
+                        Academy
                     </span>
-                </Heading>
-                <p className="text-muted-foreground mt-2">
-                    <span className="font-bold">Welcome!</span> Please sign in to continue
-                </p>
-            </View>
+                        </Heading>
+                        <p className="text-muted-foreground mt-2">
+                            <span className="font-bold">Welcome!</span> Please sign in to continue
+                        </p>
+                    </View>
+                </View>
+            </div>
         )
     },
+
     SignIn: {
         Footer() {
             const {toSignUp} = useAuthenticator();
@@ -40,7 +45,7 @@ const components = {
 
                         <button
                             onClick={toSignUp}
-                            className="text-primary hover:underline bg-transparent border-none p-0"
+                            className="text-primary font-medium hover:underline bg-transparent border-none p-0"
                         >
                             Sign up here
                         </button>
@@ -53,38 +58,44 @@ const components = {
         FormFields() {
             const {validationErrors} = useAuthenticator();
             return (
-                <>
-                    <Authenticator.SignUp.FormFields/>
-                    <RadioGroupField
-                        name="custom:role"
-                        legend={"Role"}
-                        errorMessage={validationErrors?.["custom:role"]}
-                        hasError={!!validationErrors?.["custom:role"]}
-                        className=""
-                    >
-                        <div className="flex flex-col">
-                            <Radio value="tenant">Tenant</Radio>
-                            <Radio value="manager">Manager</Radio>
-                        </div>
-                    </RadioGroupField>
-                </>
+                <div className="w-full flex justify-center">
+                    <View className="max-w-sm w-full">
+                        <Authenticator.SignUp.FormFields/>
+                        <RadioGroupField
+                            name="custom:role"
+                            legend={"Role"}
+                            errorMessage={validationErrors?.["custom:role"]}
+                            hasError={!!validationErrors?.["custom:role"]}
+                            className=""
+                        >
+                            <div className="flex flex-col text-sm items-start">
+                                <Radio value="instructor" className="flex gap-x-2 flex-row-reverse">Instructor</Radio>
+                                <Radio value="student" className="flex gap-x-2 flex-row-reverse">Student</Radio>
+                            </div>
+                        </RadioGroupField>
+                    </View>
+                </div>
             )
         },
         Footer() {
             const {toSignIn} = useAuthenticator();
             return (
-                <View className={"mt-4 text-center"}>
-                    <p className="text-muted-foreground">
-                        Already have an account?{" "}
+                <div className="w-full flex justify-center">
+                    <View className="max-w-sm w-full">
+                        <View className={"mt-4 text-center"}>
+                            <p className="text-muted-foreground">
+                                Already have an account?{" "}
 
-                        <button
-                            onClick={toSignIn}
-                            className="text-primary hover:underline bg-transparent border-none p-0"
-                        >
-                            Sign in here
-                        </button>
-                    </p>
-                </View>
+                                <button
+                                    onClick={toSignIn}
+                                    className="text-primary hover:underline bg-transparent border-none p-0 font-medium"
+                                >
+                                    Sign in here
+                                </button>
+                            </p>
+                        </View>
+                    </View>
+                </div>
             )
         }
     }
