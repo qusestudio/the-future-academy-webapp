@@ -47,7 +47,7 @@ export const api = createApi({
                   return {
                       data: {
                           cognitoInfo: {...user},
-                          // userInfo: userDetailsResponse.data as Student | Instructor, // discrepancy
+                          userInfo: userDetailsResponse.data as BaseUser, // discrepancy
                           userRole
                       }
                   }

@@ -6,7 +6,6 @@ import {usePathname, useRouter} from "next/navigation";
 import {signOut} from "@aws-amplify/auth";
 import {NAVBAR_HEIGHT} from "@/lib/constants";
 import Link from "next/link";
-import Image from "next/image";
 import {Bell, MessageCircle, Plus, Search} from "lucide-react";
 import {Button} from "@/components/ui/button";
 import {
@@ -42,13 +41,6 @@ const Navbar = () => {
                         scroll={false}
                         href={"/"}>
                         <div className={"flex items-center gap-3"}>
-                            {/*<Image*/}
-                            {/*    src={"/logo.svg"}*/}
-                            {/*    alt={"Rentiful Logo"}*/}
-                            {/*    width={24}*/}
-                            {/*    height={24}*/}
-                            {/*    className={"w-6 h-6"}*/}
-                            {/*/>*/}
                             <div className="text-xl font-bold">
                                 TheFuture
                                 <span className={"text-secondary-500 font-light hover:text-primary-300"}>
