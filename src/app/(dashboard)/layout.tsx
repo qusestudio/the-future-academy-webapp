@@ -1,9 +1,7 @@
 "use client"
 
 import React, {useEffect, useState} from 'react'
-import Navbar from "@/components/elements/Navbar";
 import {useGetAuthUserQuery} from "@/state/api";
-import {NAVBAR_HEIGHT} from "@/lib/constants";
 import AppSidebar from "@/components/elements/AppSidebar";
 import {usePathname, useRouter} from "next/navigation";
 import {SidebarInset, SidebarProvider, SidebarTrigger} from "@/components/ui/sidebar";
@@ -20,7 +18,7 @@ const DashboardLayout = ({children}: { children: React.ReactNode }) => {
             const userRole = authUser.userRole.toLowerCase();
             if (
                 userRole === "instructor" && pathname.startsWith("/students") ||
-                userRole === "students" && pathname.startsWith("/instructors")
+                userRole === "student" && pathname.startsWith("/instructors")
             ) {
                 router.push(
                     userRole === "instructor"

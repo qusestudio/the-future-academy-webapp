@@ -119,7 +119,7 @@ const AppSidebar = ({userType}: AppSidebarProps) => {
                 {
                     authUser && (
                         <DropdownMenu modal={false}>
-                            <DropdownMenuTrigger className="flex bg-primary-100 py-2 rounded-full items-center gap-2 focus:outline-none">
+                            <DropdownMenuTrigger className="flex px-1 bg-primary-100 py-1 rounded-full items-center gap-2 focus:outline-none">
                                 <Avatar>
                                     <AvatarImage src={authUser.userInfo?.image}/>
                                     <AvatarFallback className="bg-primary-600 text-white">
