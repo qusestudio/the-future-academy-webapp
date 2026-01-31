@@ -6,13 +6,15 @@ interface BaseUser {
     phoneNumber: string
 }
 
-interface Student {
+interface StudentAccount {
     firstName: string,
     lastName: string,
+    dateOfBirth: Date;
     grade: number
 }
 
-interface Instructor {
+interface InstructorAccount {
     firstName: string,
     lastName: string,
+    subjects: string[]
 }
