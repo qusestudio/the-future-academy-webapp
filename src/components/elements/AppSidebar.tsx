@@ -9,7 +9,6 @@ import {
     useSidebar
 } from "@/components/ui/sidebar";
 import {Book, CircuitBoard, Library, Menu, Settings, X} from "lucide-react";
-import {NAVBAR_HEIGHT} from "@/lib/constants";
 import {cn} from "@/lib/utils";
 import Link from "next/link";
 
@@ -44,7 +43,7 @@ const AppSidebar = ({userType}: AppSidebarProps) => {
                             {
                                 open? (
                                         <>
-                                            <h1 className="text-xl font-bold text-gray-800">
+                                            <h1 className="text-primary-900">
                                                 {userType === "instructor" ? "Instructor View": "Student View"}
                                             </h1>
                                             <button
@@ -68,8 +67,8 @@ const AppSidebar = ({userType}: AppSidebarProps) => {
                     </SidebarMenuItem>
                 </SidebarMenu>
             </SidebarHeader>
-            <SidebarContent>
-                <SidebarMenu>
+            <SidebarContent className={`${open? "px-4" : "" } `}>
+                <SidebarMenu className="space-y-2">
                     {navLinks.map((link) => {
                         const isActive = pathname === link.href;
                         return (
@@ -77,17 +76,17 @@ const AppSidebar = ({userType}: AppSidebarProps) => {
                                 <SidebarMenuButton
                                     asChild
                                     className={cn(
-                                        "flex items-center px-7 py-7",
+                                        "flex rounded-sm items-center px-7 py-4",
                                         isActive
-                                            ? "bg-gray-100 font-black"
-                                            : "text-gray-100 hover:bg-gray-100",
+                                            ? "bg-primary-100 font-semibold"
+                                            : "text-gray-100 hover:bg-primary-100",
                                         open ? "text-blue-600" : "ml-[5px]"
                                     )}
                                 >
                                     <Link href={link.href} className="w-full" scroll={false}>
                                         <div className="flex items-center gap-3">
-                                            <link.icon className={`h-5 w-5  ${isActive ? "text-blue-600": "text-gray-600"}`}/>
-                                            <span className={`font-medium ${isActive ? "text-blue-600" : "text-gray-600"}`}>
+                                            <link.icon className={`h-5 w-5 stroke-[2px] ${isActive ? "text-black": "text-gray-600"}`}/>
+                                            <span className={`text-black ${isActive ? "text-black" : "font-medium"}`}>
                                                 {link.label}
                                             </span>
                                         </div>

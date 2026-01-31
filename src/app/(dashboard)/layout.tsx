@@ -54,6 +54,7 @@ const DashboardLayout = ({children}: { children: React.ReactNode }) => {
                             <div className="bg-muted/50 aspect-video rounded-xl" />
                             <div className="bg-muted/50 aspect-video rounded-xl" />
                         </div>
+                        {children}
                         <div className="bg-muted/50 min-h-screen flex-1 rounded-xl md:min-h-min" />
                     </div>
                     {/*<Navbar/>*/}
