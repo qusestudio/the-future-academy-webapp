@@ -16,6 +16,7 @@ import {
     DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu";
 import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
+import {SidebarTrigger} from "@/components/ui/sidebar";
 
 const Navbar = () => {
 
@@ -23,7 +24,7 @@ const Navbar = () => {
     const router = useRouter();
     const pathname = usePathname();
 
-    const isDashboardPage = pathname.includes("/instructor") || pathname.includes("/student");
+    const isDashboardPage = pathname.includes("/instructors") || pathname.includes("/students");
 
     const handleSignOut = async () => {
         await signOut();
@@ -34,6 +35,7 @@ const Navbar = () => {
         <div className="fixed top-0 left-0 w-full z-50 shadow-xl"
              style={{height: `${NAVBAR_HEIGHT}px`}}
         >
+            <SidebarTrigger className="-ml-1" />
             <div className={"flex justify-between items-center w-full py-3 px-8 bg-primary-50 text-black"}>
                 <div className="flex items-center gap-4 md:gap-6">
                     <Link
@@ -57,8 +59,8 @@ const Navbar = () => {
                                 onClick={() => {
                                     router.push(
                                         authUser.userRole?.toLowerCase() === "instructor"
-                                            ? "/instructor/newsubject"
-                                            : "/student/dashboard"
+                                            ? "/instructors/newsubject"
+                                            : "/students/mylearning"
                                     )
                                 }}
                             >
@@ -66,14 +68,14 @@ const Navbar = () => {
                                     authUser.userRole?.toLowerCase() === "instructor" ? (
                                         <>
                                             <Plus className="h-4 w-4"/>
-                                            <span className="hidden md:block ml-2">Add New Subject </span>
+                                            <span className="hidden md:block ml-2">Add new subject </span>
                                         </>
                                     ) : (
                                         <>
-                                            <Search className="h-4 w-4"/>
-                                            <span className="hidden bg md:block ml-2">
-                                                Search Subject
-                                            </span>
+                                            {/*<Search className="h-4 w-4"/>*/}
+                                            {/*<span className="hidden bg md:block ml-2">*/}
+                                            {/*    Search Subject*/}
+                                            {/*</span>*/}
                                         </>
                                     )
                                 }
@@ -116,9 +118,9 @@ const Navbar = () => {
                                             className="cursor-pointer hover:bg-primary-700 hover:text-primary-100 font-bold"
                                             onClick={() => {
                                                 router.push(
-                                                    authUser.userRole?.toLowerCase() === "manager"
-                                                        ? "/managers/properties"
-                                                        : "/tenants/favorites",
+                                                    authUser.userRole?.toLowerCase() === "instructor"
+                                                        ? "/instructors/subjects"
+                                                        : "/students/mylearning",
                                                     { scroll: false }
                                                 )
                                             }}

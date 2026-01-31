@@ -22,13 +22,13 @@ export const api = createApi({
               try {
                   const session = await fetchAuthSession();
                   const {idToken} = session.tokens ?? {};
-                  const user = await getCurrentUser();
+                  const user = await getCurrentUser(); // Fetching info from cognito
                   const userRole = idToken?.payload["custom:role"] as string;
 
                   const endpoint =
                       userRole === "instructor"
-                          ? `/instructor/${user.userId}`
-                          : `/student/${user.userId}`;
+                          ? `/instructors/${user.userId}`
+                          : `/students/${user.userId}`;
 
                   // Check if the user exists in our server
                   let userDetailsResponse = await fetchWithBQ(endpoint);
@@ -47,7 +47,7 @@ export const api = createApi({
                   return {
                       data: {
                           cognitoInfo: {...user},
-                          userInfo: userDetailsResponse.data as BaseUser, // discrepancy
+                          userInfo: userDetailsResponse.data as StudentUser | InstructorUser, // discrepancy
                           userRole
                       }
                   }

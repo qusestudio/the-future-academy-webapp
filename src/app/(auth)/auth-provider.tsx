@@ -149,7 +149,7 @@ const Auth = ({children}:{children: React.ReactNode}) =>  {
     const pathname = usePathname();
 
     const isAuthPage = pathname.match(/^\/(signin|signup)$/);
-    const isDashboardPage = pathname.startsWith("/instructor") || pathname.startsWith("/student");
+    const isDashboardPage = pathname.startsWith("/instructors") || pathname.startsWith("/students");
 
     //Redirect authenticated users away from auth pages
     useEffect(() => {
