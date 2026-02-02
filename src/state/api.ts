@@ -11,6 +11,7 @@ export const api = createApi({
         if (idToken) {
             headers.set("Authorization", `Bearer ${idToken}`);
         }
+        console.log(headers.entries());
         return headers;
       }
   }),
@@ -32,6 +33,7 @@ export const api = createApi({
 
                   // Check if the user exists in our server
                   console.log("Checking If user exists in our server")
+
                   let userDetailsResponse = await fetchWithBQ(endpoint);
                   console.log(userDetailsResponse.data);
                   console.log(userDetailsResponse.error);
