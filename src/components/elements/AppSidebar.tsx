@@ -123,10 +123,10 @@ const AppSidebar = ({userType}: AppSidebarProps) => {
                                 <Avatar>
                                     <AvatarImage src={authUser.userInfo?.image}/>
                                     <AvatarFallback className="bg-primary-600 text-white">
-                                        {authUser.userRole?.[0].toUpperCase()}
+                                        { authUser.userInfo?.name[0].toUpperCase() || authUser.userRole?.[0].toUpperCase()}
                                     </AvatarFallback>
                                 </Avatar>
-                                <p className="text-black text-sm">
+                                <p className="text-black capitalize text-sm">
                                     {authUser.userInfo?.name || "Profile"}
                                 </p>
                             </DropdownMenuTrigger>
