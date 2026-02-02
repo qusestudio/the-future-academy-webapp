@@ -126,7 +126,7 @@ const AppSidebar = ({userType}: AppSidebarProps) => {
                                         {authUser.userRole?.[0].toUpperCase()}
                                     </AvatarFallback>
                                 </Avatar>
-                                <p className="text-black text-sm hidden md:block">
+                                <p className="text-black text-sm">
                                     {authUser.userInfo?.name || "Profile"}
                                 </p>
                             </DropdownMenuTrigger>

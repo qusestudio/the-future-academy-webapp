@@ -15,7 +15,7 @@ export const api = createApi({
       }
   }),
   reducerPath: "api",
-  tagTypes: [],
+  tagTypes: ["Instructors", "Students"],
   endpoints: (build) => ({
       getAuthUser: build.query<User, void>({
           queryFn: async (_, _queryApi, _extraoptions, fetchWithBQ) => {
@@ -31,11 +31,14 @@ export const api = createApi({
                           : `/students/${user.userId}`;
 
                   // Check if the user exists in our server
+                  console.log("Checking If user exists in our server")
                   let userDetailsResponse = await fetchWithBQ(endpoint);
-
+                  console.log(userDetailsResponse.data);
+                  console.log(userDetailsResponse.error);
 
                   // If user doesn't exist, create new user
                   if (userDetailsResponse.error && userDetailsResponse.error.status === 404) {
+                      console.log("User Not Found Error")
                       userDetailsResponse = await createNewUserInDatabase(
                           user,
                           idToken,
