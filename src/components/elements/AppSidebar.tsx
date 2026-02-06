@@ -49,7 +49,7 @@ const AppSidebar = ({userType}: AppSidebarProps) => {
     return (
         <Sidebar
             collapsible="icon"
-            className="fixed left-0 bg-secondary-400 shadow-lg"
+            className="fixed left-0  border-r-black border-r-3 shadow-lg"
 
         >
             <SidebarHeader>
@@ -86,7 +86,7 @@ const AppSidebar = ({userType}: AppSidebarProps) => {
                     </SidebarMenuItem>
                 </SidebarMenu>
             </SidebarHeader>
-            <SidebarContent className={` flex flex-col justify-between pb-5 ${open? "px-4" : "" }`}>
+            <SidebarContent className={` flex flex-col  justify-between pb-5 ${open? "px-4" : "" }`}>
                 <SidebarMenu className="space-y-2">
                     {navLinks.map((link) => {
                         const isActive = pathname === link.href;
@@ -97,7 +97,7 @@ const AppSidebar = ({userType}: AppSidebarProps) => {
                                     className={cn(
                                         "flex rounded-sm transition-all duration-300 border-2 items-center justify-start px-7 py-4",
                                         isActive
-                                            ? "bg-secondary-450/51 border-black "
+                                            ? "bg-yellow-200 border-black "
                                             : "text-gray-100 border-transparent hover:bg-primary-100",
                                         open ? "text-black" : "ml-[5px]"
                                     )}

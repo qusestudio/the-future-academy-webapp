@@ -34,3 +34,33 @@ interface Enrollment {
     subjectId: string,
     studentAccountId: string,
 }
+
+interface Subject {
+    id?: string,
+    instructorId: string,
+    title: string,
+    grade: number,
+    term: number,
+}
+
+interface Topic {
+    id: string,
+    subjectId: string,
+    title: string,
+}
+
+interface Lesson {
+    id: string,
+    videoId: string,
+    title: string,
+    description: string
+}
+
+export const {
+    StudentUser,
+    StudentAccount,
+    InstructorUser,
+    InstructorAccount,
+    Enrollment,
+    Topic
+}

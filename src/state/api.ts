@@ -1,71 +1,206 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import {createApi, fetchBaseQuery} from "@reduxjs/toolkit/query/react";
 import {fetchAuthSession, getCurrentUser} from "aws-amplify/auth"
-import {createNewUserInDatabase} from "@/lib/utils";
+import {createNewUserInDatabase, withToast} from "@/lib/utils";
+import {Enrollment, InstructorUser, Lesson, StudentUser, Subject} from "@/types/models";
+import {toast} from "sonner";
 
 export const api = createApi({
-  baseQuery: fetchBaseQuery({
-    baseUrl: process.env.NEXT_PUBLIC_API_BASE_URL,
-      prepareHeaders: async (headers) => {
-        const session = await fetchAuthSession();
-        const { idToken } = session.tokens ?? {};
-        if (idToken) {
-            headers.set("Authorization", `Bearer ${idToken}`);
+    baseQuery: fetchBaseQuery({
+        baseUrl: process.env.NEXT_PUBLIC_API_BASE_URL,
+        prepareHeaders: async (headers) => {
+            const session = await fetchAuthSession();
+            const {idToken} = session.tokens ?? {};
+            if (idToken) {
+                headers.set("Authorization", `Bearer ${idToken}`);
+            }
+            console.log(headers.entries());
+            return headers;
         }
-        console.log(headers.entries());
-        return headers;
-      }
-  }),
-  reducerPath: "api",
-  tagTypes: ["Instructors", "Students"],
-  endpoints: (build) => ({
-      getAuthUser: build.query<User, void>({
-          queryFn: async (_, _queryApi, _extraoptions, fetchWithBQ) => {
-              try {
-                  const session = await fetchAuthSession();
-                  const {idToken} = session.tokens ?? {};
-                  const user = await getCurrentUser(); // Fetching info from cognito
-                  const userRole = idToken?.payload["custom:role"] as string;
+    }),
+    reducerPath: "api",
+    tagTypes: ["Instructors", "Students", "Subjects", "Topics", "Lessons", "LessonDetails", "Enrollments"],
+    endpoints: (build) => ({
+        //
+        getAuthUser: build.query<User, void>({
+            queryFn: async (_, _queryApi, _extraoptions, fetchWithBQ) => {
+                try {
+                    const session = await fetchAuthSession();
+                    const {idToken} = session.tokens ?? {};
+                    const user = await getCurrentUser(); // Fetching info from cognito
+                    const userRole = idToken?.payload["custom:role"] as string;
 
-                  const endpoint =
-                      userRole === "instructor"
-                          ? `/instructors/${user.userId}`
-                          : `/students/${user.userId}`;
+                    const endpoint =
+                        userRole === "instructor"
+                            ? `/instructors/${user.userId}`
+                            : `/students/${user.userId}`;
 
-                  // Check if the user exists in our server
-                  console.log("Checking If user exists in our server")
+                    // Check if the user exists in our server
+                    console.log("Checking If user exists in our server")
 
-                  let userDetailsResponse = await fetchWithBQ(endpoint);
-                  console.log(userDetailsResponse.data);
-                  console.log(userDetailsResponse.error);
+                    let userDetailsResponse = await fetchWithBQ(endpoint);
+                    console.log(userDetailsResponse.data);
+                    console.log(userDetailsResponse.error);
 
-                  // If user doesn't exist, create new user
-                  if (userDetailsResponse.error && userDetailsResponse.error.status === 404) {
-                      console.log("User Not Found Error")
-                      userDetailsResponse = await createNewUserInDatabase(
-                          user,
-                          idToken,
-                          userRole,
-                          fetchWithBQ
-                      );
-                  }
+                    // If user doesn't exist, create new user
+                    if (userDetailsResponse.error && userDetailsResponse.error.status === 404) {
+                        console.log("User Not Found Error")
+                        userDetailsResponse = await createNewUserInDatabase(
+                            user,
+                            idToken,
+                            userRole,
+                            fetchWithBQ
+                        );
+                    }
 
-                  return {
-                      data: {
-                          cognitoInfo: {...user},
-                          userInfo: userDetailsResponse.data as StudentUser | InstructorUser, // discrepancy
-                          userRole
-                      }
-                  }
-              } catch (error: any) {
-                  return {
-                      error: error.message || "Could not fetch user data"
-                  }
-              }
-          }
-      })
-  }),
+                    return {
+                        data: {
+                            cognitoInfo: {...user},
+                            userInfo: userDetailsResponse.data as StudentUser | InstructorUser, // discrepancy
+                            userRole
+                        }
+                    }
+                } catch (error: any) {
+                    return {
+                        error: error.message || "Could not fetch user data"
+                    }
+                }
+            }
+        }),
+        // Lesson endpoints
+        getLessons: build.query<Lesson[], void>({
+            query: (topicId) => {
+                return {url: `/topics/${topicId}}lessons`};
+            },
+            providesTags: (result) =>
+                result
+                    ? [
+                        ...result.map(({id}) => ({type: "Lessons" as const, id})),
+                        {type: "Lessons", id: "LIST"},
+                    ]
+                    : [{type: "Lessons", id: "LIST"}],
+
+            async onQueryStarted(_, {queryFulfilled}) {
+                await withToast(queryFulfilled, {
+                    error: "Failed to fetch lessons.",
+                });
+            },
+        }),
+        getLesson: build.query<Lesson, string>({
+            query: (lessonId) => `/lessons/${lessonId}`,
+            providesTags: (result, error, id) => [{ type: "LessonDetails", id }],
+            async onQueryStarted(_, { queryFulfilled }) {
+                await withToast(queryFulfilled, {
+                    error: "Failed to load lesson details.",
+                });
+            },
+        }),
+        createLesson: build.mutation<Lesson, { topicId: string; formData: FormData }>({
+            query: ({ topicId, formData }) => {
+                formData.append("topicId", topicId);
+
+                return {
+                    url: "lessons",
+                    method: "POST",
+                    body: formData,
+                };
+            },
+
+            invalidatesTags: (result, error, { topicId }) => [
+                { type: "Lessons", id: topicId },
+                { type: "Lessons", id: "LIST" },
+            ],
+
+            async onQueryStarted(_, { queryFulfilled }) {
+                await withToast(queryFulfilled, {
+                    error: "Failed to create lesson.",
+                    success: "Lesson created successfully!",
+                });
+            },
+        }),
+
+        // Subject endpoints
+        getStudentEnrollments: build.query<Enrollment[], void>({
+            query: (studentId) => {
+                return {url: `/students/${studentId}/enrollments`};
+            },
+            providesTags: (result) =>
+                result
+                    ? [
+                        ...result.map(({id}) => ({type: "Enrollments" as const, id})),
+                        {type: "Enrollments", id: "LIST"},
+                    ]
+                    : [{type: "Enrollments", id: "LIST"}],
+
+            async onQueryStarted(_, {queryFulfilled}) {
+                await withToast(queryFulfilled, {
+                    error: "Failed to fetch enrollments.",
+                });
+            },
+        }),
+        getSubjectsForInstructor: build.query<Subject[], string>({
+            query: (instructorId) => {
+                return {url: `/instructors/${instructorId}/subjects`};
+            },
+            providesTags: (result) =>
+                result
+                    ? [
+                        ...result.map(({id}) => ({type: "Subjects" as const, id})),
+                        {type: "Subjects", id: "LIST"},
+                    ]
+                    : [{type: "Subjects", id: "LIST"}],
+
+            async onQueryStarted(_, {queryFulfilled}) {
+                await withToast(queryFulfilled, {
+                    error: "Failed to fetch subjects.",
+                });
+            },
+        }),
+        getSubject: build.query<Lesson, string>({
+            query: (lessonId) => `/lessons/${lessonId}`,
+            providesTags: (result, error, id) => [{ type: "LessonDetails", id }],
+            async onQueryStarted(_, { queryFulfilled }) {
+                await withToast(queryFulfilled, {
+                    error: "Failed to load lesson details.",
+                });
+            },
+        }),
+        createSubject: build.mutation<Subject, { subject: Subject }>({
+            query: ({ subject}) => {
+                alert(subject.instructorId)
+                return {
+                    url: "/subjects",
+                    method: "POST",
+                    body: subject,
+                };
+            },
+
+            invalidatesTags: (result, error) => [
+                { type: "Subjects"},
+                { type: "Subjects", id: "LIST" },
+            ],
+
+            async onQueryStarted(_, { queryFulfilled }) {
+
+                toast.promise(queryFulfilled, {
+                    loading: "Creating subject...",
+                    success: "Subject created successfully!",
+                    error: "Failed to create subject.",
+                });
+
+                // await withToast(queryFulfilled, {
+                //     error: "Failed to create subject.",
+                //     success: "Subject created successfully!",
+                // });
+            },
+        }),
+    }),
 });
 
 export const {
-    useGetAuthUserQuery
+    useGetAuthUserQuery,
+    useGetSubjectsForInstructorQuery,
+    useGetStudentEnrollmentsQuery,
+    useCreateSubjectMutation
 } = api;
+
+

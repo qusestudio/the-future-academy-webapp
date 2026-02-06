@@ -20,9 +20,9 @@ const components = {
             <div className="w-full flex justify-center">
                 <View className="max-w-sm w-full">
                     <View className={"mt-4 mb-7"}>
-                        <Heading level={3} className="!text-2xl  !font-bold">
+                        <Heading level={3} className="text-2xl font-bold">
                             TheFuture
-                            <span className="text-secondary-500 font-light hover:!text-primary-300">
+                            <span className="text-secondary-500 font-light hover:text-primary-300">
                         Academy
                     </span>
                         </Heading>

@@ -1,49 +1,67 @@
-import { LucideIcon } from "lucide-react";
-import { AuthUser } from "aws-amplify/auth";
-import { MotionProps as OriginalMotionProps } from "framer-motion";
+import {LucideIcon} from "lucide-react";
+import {AuthUser} from "aws-amplify/auth";
+import {MotionProps as OriginalMotionProps} from "framer-motion";
+import {SubjectFormData} from "@/lib/schemas";
 
 declare module "framer-motion" {
-  interface MotionProps extends OriginalMotionProps {
-    className?: string;
-  }
+    interface MotionProps extends OriginalMotionProps {
+        className?: string;
+    }
 }
 
 declare global {
-  interface SidebarLinkProps {
-    href: string;
-    icon: LucideIcon;
-    label: string;
-  }
+    interface MyLearningListItemProps {
+        id: string,
+        name: string,
+        term: number,
+        topicCount: number
+    }
 
-  interface ImagePreviewsProps {
-    images: string[];
-  }
+    interface TopicListSidebarItemProps {
+        id: string,
+        name: string,
+    }
 
-  interface HeaderProps {
-    title: string;
-    subtitle: string;
-  }
+    interface SidebarLinkProps {
+        href: string;
+        icon: LucideIcon;
+        label: string;
+    }
 
-  interface NavbarProps {
-    isDashboard: boolean;
-  }
+    interface ImagePreviewsProps {
+        images: string[];
+    }
 
-  interface AppSidebarProps {
-    userType: "instructor" | "student";
-  }
+    interface HeaderProps {
+        title: string;
+        subtitle: string;
+    }
 
-  interface SettingsFormProps {
-    initialData: SettingsFormData;
-    onSubmit: (data: SettingsFormData) => Promise<void>;
-    userType: "instructor" | "student";
-  }
+    interface NavbarProps {
+        isDashboard: boolean;
+    }
 
-  interface User {
-    userInfo: any;
-    cognitoInfo: AuthUser;
-    // userInfo: Student | Instructor;
-    userRole: JsonObject | JsonPrimitive | JsonArray;
-  }
+    interface AppSidebarProps {
+        userType: "instructor" | "student";
+    }
+
+    interface SubjectFormProps {
+        initialData?: SubjectFormData;
+        onSubmit: (data: SubjectFormData) => Promise<void>;
+    }
+
+    interface CreateSubjectFormProps {
+      title: string;
+      grade: number;
+      term: number;
+    }
+
+    interface User {
+        userInfo: any;
+        cognitoInfo: AuthUser;
+        // userInfo: Student | Instructor;
+        userRole: JsonObject | JsonPrimitive | JsonArray;
+    }
 }
 
 export {};

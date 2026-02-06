@@ -36,36 +36,20 @@ const DashboardLayout = ({children}: { children: React.ReactNode }) => {
     if (!authUser?.userRole) return null;
 
     return (
-        <SidebarProvider>
-            {/*<div className="min-h-screen w-full bg-primary-100">*/}
+        <SidebarProvider className="overflow-x-hidden">
                 <AppSidebar userType={authUser.userRole.toLowerCase()}/>
                 <SidebarInset>
-                    <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4">
+                    <header className="flex h-16 shrink-0 items-center gap-2 border-b-2 border-black px-4">
                         <SidebarTrigger className="-ml-1" />
                         <Separator
                             orientation="vertical"
                             className="mr-2 data-[orientation=vertical]:h-4"
                         />
                     </header>
-                    <div className="flex flex-1 flex-col gap-4 p-4">
-                        {/*<div className="grid auto-rows-min gap-4 md:grid-cols-3">*/}
-                        {/*    <div className="bg-muted/50 aspect-video rounded-xl" />*/}
-                        {/*    <div className="bg-muted/50 aspect-video rounded-xl" />*/}
-                        {/*    <div className="bg-muted/50 aspect-video rounded-xl" />*/}
-                        {/*</div>*/}
+                    <div className="flex flex-1 flex-col gap-4 p-4 px-6">
                         {children}
-                        {/*<div className="bg-muted/50 min-h-screen flex-1 rounded-xl md:min-h-min" />*/}
                     </div>
-                    {/*<Navbar/>*/}
-                    {/*<div style={{paddingTop: `${NAVBAR_HEIGHT}px`}}>*/}
-                    {/*    <main className="flex">*/}
-                    {/*        <div className={"grow transition-all duration-300"}>*/}
-                    {/*            {children}*/}
-                    {/*        </div>*/}
-                    {/*    </main>*/}
-                    {/*</div>*/}
                 </SidebarInset>
-            {/*</div>*/}
         </SidebarProvider>
     )
 }

@@ -4,6 +4,7 @@ import React from 'react'
 import {Authenticator} from "@aws-amplify/ui-react";
 import Auth from "@/app/(auth)/auth-provider";
 import StoreProvider from "@/state/redux";
+import {Toaster} from "sonner";
 
 const Providers = ( {children} : { children: React.ReactNode }) => {
     return (
@@ -11,6 +12,11 @@ const Providers = ( {children} : { children: React.ReactNode }) => {
             <Authenticator.Provider>
                 <Auth>
                     {children}
+                    <Toaster
+                        richColors
+                        theme={"system"}
+                        position={"bottom-center"}
+                    />
                 </Auth>
             </Authenticator.Provider>
         </StoreProvider>
