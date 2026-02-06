@@ -38,15 +38,15 @@ const DashboardLayout = ({children}: { children: React.ReactNode }) => {
     return (
         <SidebarProvider className="overflow-x-hidden">
                 <AppSidebar userType={authUser.userRole.toLowerCase()}/>
-                <SidebarInset>
-                    <header className="flex h-16 shrink-0 items-center gap-2 border-b-2 border-black px-4">
+                <SidebarInset className="h-screen">
+                    <header className="flex h-[7vh] shrink-0 items-center gap-2 border-b-2 border-black px-4">
                         <SidebarTrigger className="-ml-1" />
                         <Separator
                             orientation="vertical"
                             className="mr-2 data-[orientation=vertical]:h-4"
                         />
                     </header>
-                    <div className="flex flex-1 flex-col gap-4 p-4 px-6">
+                    <div className="flex w-full h-[80vh] flex-1 flex-col gap-4 p-4 px-6">
                         {children}
                     </div>
                 </SidebarInset>

@@ -89,7 +89,7 @@ const AppSidebar = ({userType}: AppSidebarProps) => {
             <SidebarContent className={` flex flex-col  justify-between pb-5 ${open? "px-4" : "" }`}>
                 <SidebarMenu className="space-y-2">
                     {navLinks.map((link) => {
-                        const isActive = pathname === link.href;
+                        const isActive = pathname === link.href || pathname.includes("/instructors/"+link.href);
                         return (
                             <SidebarMenuItem key={link.href}>
                                 <SidebarMenuButton

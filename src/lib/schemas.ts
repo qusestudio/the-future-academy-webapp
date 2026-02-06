@@ -25,17 +25,11 @@ export type InstructorAccountFormData = z.infer<typeof instructorAccountSchema>;
 
 export const subjectSchema = z.object({
     title: z.string().min(1, "Name is required"),
-    grade: z.coerce.number()
-        .min(10, "You must be in Grade 10 - 12")
-        .max(12, "You must be in Grade 10 - 12")
-        .int(),
-    term: z.coerce.number()
-        .min(1, "Term should be between 1 and 4")
-        .max(4, "Term should be between 1 and 4")
-        .int(),
+    grade: z.coerce.number(),
+    term: z.coerce.number(),
 });
 
-export type SubjectFormData = z.infer<typeof subjectSchema>;
+export type SubjectFormData = z.output<typeof subjectSchema>;
 
 export const settingsSchema = z.object({
     name: z.string().min(1, "Name is required"),

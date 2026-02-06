@@ -24,12 +24,16 @@ const InstructorSubjects = () => {
     }
 
     if (authLoading || subjectLoading) {
-        return <>Loading...</>
+        return (
+            <div className="w-full items-center justify-center h-full gap-y-5 flex flex-col">
+                <p className="text-lg font-medium">Loading...</p>
+            </div>
+        )
     }
 
     if(subjects) {
         return (
-            <div className="relative w-full items-center h-full gap-y-5 flex flex-col">
+            <div className="relative  overflow-y-scroll [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] w-full items-center h-full gap-y-5 flex flex-col">
                 <header className="w-full max-w-7xl flex justify-between">
                     <p className="font-medium">Subjects</p>
                     <button
@@ -44,7 +48,7 @@ const InstructorSubjects = () => {
                         <Suspense fallback={<div>Loading...</div>}>
                             {
                                 subjects?.map((subject: Subject, index: number) =>
-                                    <SubjectListItem key={index} subject={subject} />
+                                    <SubjectListItem key={index} subject={subject} onView={() => router.push(pathname + "/" + subject.id)} />
                                 )
                             }
                         </Suspense>

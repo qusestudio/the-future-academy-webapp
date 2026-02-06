@@ -18,7 +18,7 @@ export const api = createApi({
         }
     }),
     reducerPath: "api",
-    tagTypes: ["Instructors", "Students", "Subjects", "Topics", "Lessons", "LessonDetails", "Enrollments"],
+    tagTypes: ["Instructors", "Students", "Subjects", "Topics", "Lessons", "LessonDetails", "Enrollments", "SubjectDetails"],
     endpoints: (build) => ({
         //
         getAuthUser: build.query<User, void>({
@@ -155,18 +155,17 @@ export const api = createApi({
                 });
             },
         }),
-        getSubject: build.query<Lesson, string>({
-            query: (lessonId) => `/lessons/${lessonId}`,
-            providesTags: (result, error, id) => [{ type: "LessonDetails", id }],
+        getSubject: build.query<Subject, string>({
+            query: (subjectId) => `/subjects/${subjectId}`,
+            providesTags: (result, error, id) => [{ type: "SubjectDetails", id }],
             async onQueryStarted(_, { queryFulfilled }) {
                 await withToast(queryFulfilled, {
-                    error: "Failed to load lesson details.",
+                    error: "Failed to load subject details.",
                 });
             },
         }),
         createSubject: build.mutation<Subject, { subject: Subject }>({
             query: ({ subject}) => {
-                alert(subject.instructorId)
                 return {
                     url: "/subjects",
                     method: "POST",
@@ -198,6 +197,7 @@ export const api = createApi({
 
 export const {
     useGetAuthUserQuery,
+    useGetSubjectQuery,
     useGetSubjectsForInstructorQuery,
     useGetStudentEnrollmentsQuery,
     useCreateSubjectMutation

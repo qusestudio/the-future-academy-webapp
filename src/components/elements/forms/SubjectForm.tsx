@@ -69,7 +69,7 @@ function SubjectForm ({ initialData, onSubmit}: SubjectFormProps) {
     )
 }
 
-function CreateSubjectForm ({ onSubmit}: SubjectFormProps) {
+function CreateSubjectForm ({ onSubmit }: SubjectFormProps) {
 
     const initialData = {
         title: "",
