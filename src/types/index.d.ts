@@ -1,7 +1,7 @@
 import {LucideIcon} from "lucide-react";
 import {AuthUser} from "aws-amplify/auth";
 import {MotionProps as OriginalMotionProps} from "framer-motion";
-import {SubjectFormData} from "@/lib/schemas";
+import {SubjectFormData, TopicFormData} from "@/lib/schemas";
 
 declare module "framer-motion" {
     interface MotionProps extends OriginalMotionProps {
@@ -50,6 +50,11 @@ declare global {
         onSubmit: (data: SubjectFormData) => Promise<void>;
     }
 
+    interface TopicFormProps {
+        initialData?: TopicFormData;
+        onSubmit: (data: TopicFormData) => Promise<void>;
+    }
+
     interface CreateSubjectFormProps {
       title: string;
       grade: number;
@@ -59,7 +64,6 @@ declare global {
     interface User {
         userInfo: any;
         cognitoInfo: AuthUser;
-        // userInfo: Student | Instructor;
         userRole: JsonObject | JsonPrimitive | JsonArray;
     }
 }

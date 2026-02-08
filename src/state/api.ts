@@ -1,7 +1,7 @@
 import {createApi, fetchBaseQuery} from "@reduxjs/toolkit/query/react";
 import {fetchAuthSession, getCurrentUser} from "aws-amplify/auth"
 import {createNewUserInDatabase, withToast} from "@/lib/utils";
-import {Enrollment, InstructorUser, Lesson, StudentUser, Subject} from "@/types/models";
+import {Enrollment, InstructorUser, Lesson, StudentUser, Subject, Topic} from "@/types/models";
 import {toast} from "sonner";
 
 export const api = createApi({
@@ -18,7 +18,7 @@ export const api = createApi({
         }
     }),
     reducerPath: "api",
-    tagTypes: ["Instructors", "Students", "Subjects", "Topics", "Lessons", "LessonDetails", "Enrollments", "SubjectDetails"],
+    tagTypes: ["Instructors", "Students", "Subjects", "topic", "Lessons", "LessonDetails", "Enrollments", "SubjectDetails", "Topics", "TopicDetails"],
     endpoints: (build) => ({
         //
         getAuthUser: build.query<User, void>({
@@ -67,9 +67,9 @@ export const api = createApi({
             }
         }),
         // Lesson endpoints
-        getLessons: build.query<Lesson[], void>({
+        getLessons: build.query<Lesson[], string>({
             query: (topicId) => {
-                return {url: `/topics/${topicId}}lessons`};
+                return {url: `/topics/${topicId}/lessons`};
             },
             providesTags: (result) =>
                 result
@@ -99,7 +99,7 @@ export const api = createApi({
                 formData.append("topicId", topicId);
 
                 return {
-                    url: "lessons",
+                    url: "/lessons",
                     method: "POST",
                     body: formData,
                 };
@@ -192,6 +192,62 @@ export const api = createApi({
                 // });
             },
         }),
+
+        // Topics endpoints
+        getTopicsBySubject: build.query<Topic[], string>({
+            query: (subjectId) => {
+                return {url: `/subjects/${subjectId}/topics`};
+            },
+            providesTags: (result) =>
+                result
+                    ? [
+                        ...result.map(({id}) => ({type: "Topics" as const, id})),
+                        {type: "Topics", id: "LIST"},
+                    ]
+                    : [{type: "Topics", id: "LIST"}],
+
+            async onQueryStarted(_, {queryFulfilled}) {
+                await withToast(queryFulfilled, {
+                    error: "Failed to fetch subjects.",
+                });
+            },
+        }),
+        createTopic: build.mutation<Topic, { topic: Topic }>({
+            query: ({topic}) => {
+
+                return {
+                    url: "/topics",
+                    method: "POST",
+                    body: topic,
+                };
+            },
+
+            invalidatesTags: (result, error) => [
+                { type: "Topics"},
+                { type: "Topics", id: "LIST" },
+            ],
+
+            async onQueryStarted(_, { queryFulfilled }) {
+                const promise = queryFulfilled;
+
+                toast.promise(queryFulfilled, {
+                    loading: "Creating topic...",
+                    success: "Topic created successfully!",
+                    error: "Failed to create topic.",
+                });
+
+                await promise;
+            },
+        }),
+        getTopic: build.query<Topic, string>({
+            query: (topicId) => `/topics/${topicId}`,
+            providesTags: (result, error, id) => [{ type: "TopicDetails", id }],
+            async onQueryStarted(_, { queryFulfilled }) {
+                await withToast(queryFulfilled, {
+                    error: "Failed to load topics details.",
+                });
+            },
+        }),
     }),
 });
 
@@ -199,6 +255,10 @@ export const {
     useGetAuthUserQuery,
     useGetSubjectQuery,
     useGetSubjectsForInstructorQuery,
+    useGetTopicsBySubjectQuery,
+    useCreateTopicMutation,
+    useGetTopicQuery,
+    useGetLessonsQuery,
     useGetStudentEnrollmentsQuery,
     useCreateSubjectMutation
 } = api;

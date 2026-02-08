@@ -44,13 +44,14 @@ interface Subject {
 }
 
 interface Topic {
-    id: string,
+    id?: string,
     subjectId: string,
     title: string,
 }
 
 interface Lesson {
     id: string,
+    topic_id: string,
     videoId: string,
     title: string,
     description: string

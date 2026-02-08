@@ -24,12 +24,18 @@ export const instructorAccountSchema = z.object({
 export type InstructorAccountFormData = z.infer<typeof instructorAccountSchema>;
 
 export const subjectSchema = z.object({
-    title: z.string().min(1, "Name is required"),
+    title: z.string().min(1, "Title is required"),
     grade: z.coerce.number(),
     term: z.coerce.number(),
 });
 
 export type SubjectFormData = z.output<typeof subjectSchema>;
+
+export const topicSchema = z.object({
+    title: z.string().min(1, "Title is required"),
+});
+
+export type TopicFormData = z.output<typeof topicSchema>;
 
 export const settingsSchema = z.object({
     name: z.string().min(1, "Name is required"),
