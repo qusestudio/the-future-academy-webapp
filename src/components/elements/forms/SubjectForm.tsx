@@ -70,7 +70,6 @@ function SubjectForm ({ initialData, onSubmit}: SubjectFormProps) {
 }
 
 function CreateSubjectForm ({ onSubmit }: SubjectFormProps) {
-
     const initialData = {
         title: "",
         grade: 10,
@@ -119,9 +118,54 @@ function CreateSubjectForm ({ onSubmit }: SubjectFormProps) {
 }
 
 function CreateTopicForm ({ onSubmit }: TopicFormProps) {
+    const initialData = {
+        title: "",
+    }
+
+    const form  = useForm<TopicFormData>(
+        {
+            resolver: zodResolver(topicSchema),
+            defaultValues: initialData
+        }
+    );
+
+    const handleSubmit = async (data: TopicFormData) => {
+        await onSubmit(data);
+    }
+
+    return (
+        <div className="pt-8 pb-5 flex flex-col items-center w-full max-w-3xl">
+            <div className="mb-5">
+                <p className=" text-black mt-1">
+                    Create a new topic
+                </p>
+            </div>
+            <div className="bg-white w-full rounded-xl">
+                <Form {...form}>
+                    <form
+                        onSubmit={form.handleSubmit(handleSubmit)}
+                        className="space-y-6"
+                    >
+                        <CustomFormField name="title" label="Title" />
+                        <div className="pt-4 flex justify-between">
+                            <Button
+                                className="bg-primary-700 hover:cursor-pointer text-white hover:bg-primary-800"
+                            >
+                                Create Topic
+                            </Button>
+                        </div>
+                    </form>
+                </Form>
+            </div>
+        </div>
+    )
+}
+
+function CreateLessonForm ({ onSubmit }: TopicFormProps) {
 
     const initialData = {
         title: "",
+        description: "",
     }
 
     const form  = useForm<TopicFormData>(

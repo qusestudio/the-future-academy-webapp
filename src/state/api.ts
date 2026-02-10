@@ -20,7 +20,7 @@ export const api = createApi({
     reducerPath: "api",
     tagTypes: ["Instructors", "Students", "Subjects", "topic", "Lessons", "LessonDetails", "Enrollments", "SubjectDetails", "Topics", "TopicDetails"],
     endpoints: (build) => ({
-        //
+        // Authentication
         getAuthUser: build.query<User, void>({
             queryFn: async (_, _queryApi, _extraoptions, fetchWithBQ) => {
                 try {
@@ -66,57 +66,7 @@ export const api = createApi({
                 }
             }
         }),
-        // Lesson endpoints
-        getLessons: build.query<Lesson[], string>({
-            query: (topicId) => {
-                return {url: `/topics/${topicId}/lessons`};
-            },
-            providesTags: (result) =>
-                result
-                    ? [
-                        ...result.map(({id}) => ({type: "Lessons" as const, id})),
-                        {type: "Lessons", id: "LIST"},
-                    ]
-                    : [{type: "Lessons", id: "LIST"}],
 
-            async onQueryStarted(_, {queryFulfilled}) {
-                await withToast(queryFulfilled, {
-                    error: "Failed to fetch lessons.",
-                });
-            },
-        }),
-        getLesson: build.query<Lesson, string>({
-            query: (lessonId) => `/lessons/${lessonId}`,
-            providesTags: (result, error, id) => [{ type: "LessonDetails", id }],
-            async onQueryStarted(_, { queryFulfilled }) {
-                await withToast(queryFulfilled, {
-                    error: "Failed to load lesson details.",
-                });
-            },
-        }),
-        createLesson: build.mutation<Lesson, { topicId: string; formData: FormData }>({
-            query: ({ topicId, formData }) => {
-                formData.append("topicId", topicId);
-
-                return {
-                    url: "/lessons",
-                    method: "POST",
-                    body: formData,
-                };
-            },
-
-            invalidatesTags: (result, error, { topicId }) => [
-                { type: "Lessons", id: topicId },
-                { type: "Lessons", id: "LIST" },
-            ],
-
-            async onQueryStarted(_, { queryFulfilled }) {
-                await withToast(queryFulfilled, {
-                    error: "Failed to create lesson.",
-                    success: "Lesson created successfully!",
-                });
-            },
-        }),
 
         // Subject endpoints
         getStudentEnrollments: build.query<Enrollment[], void>({
@@ -214,7 +164,6 @@ export const api = createApi({
         }),
         createTopic: build.mutation<Topic, { topic: Topic }>({
             query: ({topic}) => {
-
                 return {
                     url: "/topics",
                     method: "POST",
@@ -245,6 +194,58 @@ export const api = createApi({
             async onQueryStarted(_, { queryFulfilled }) {
                 await withToast(queryFulfilled, {
                     error: "Failed to load topics details.",
+                });
+            },
+        }),
+
+        // Lesson endpoints
+        getLessons: build.query<Lesson[], string>({
+            query: (topicId) => {
+                return {url: `/topics/${topicId}/lessons`};
+            },
+            providesTags: (result) =>
+                result
+                    ? [
+                        ...result.map(({id}) => ({type: "Lessons" as const, id})),
+                        {type: "Lessons", id: "LIST"},
+                    ]
+                    : [{type: "Lessons", id: "LIST"}],
+
+            async onQueryStarted(_, {queryFulfilled}) {
+                await withToast(queryFulfilled, {
+                    error: "Failed to fetch lessons.",
+                });
+            },
+        }),
+        getLesson: build.query<Lesson, string>({
+            query: (lessonId) => `/lessons/${lessonId}`,
+            providesTags: (result, error, id) => [{ type: "LessonDetails", id }],
+            async onQueryStarted(_, { queryFulfilled }) {
+                await withToast(queryFulfilled, {
+                    error: "Failed to load lesson details.",
+                });
+            },
+        }),
+        createLesson: build.mutation<Lesson, { topicId: string; formData: FormData }>({
+            query: ({ topicId, formData }) => {
+                formData.append("topicId", topicId);
+
+                return {
+                    url: "/lessons",
+                    method: "POST",
+                    body: formData,
+                };
+            },
+
+            invalidatesTags: (result, error, { topicId }) => [
+                { type: "Lessons", id: topicId },
+                { type: "Lessons", id: "LIST" },
+            ],
+
+            async onQueryStarted(_, { queryFulfilled }) {
+                await withToast(queryFulfilled, {
+                    error: "Failed to create lesson.",
+                    success: "Lesson created successfully!",
                 });
             },
         }),

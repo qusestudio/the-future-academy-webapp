@@ -46,7 +46,7 @@ const TopicDetails = () => {
                     variant={"outline"}
                     className="border-black hover:cursor-pointer border-2 rounded-full"
                     onClick={() => {
-                        router.push(`/instructors/topic-details/new-lesson?topicId=` + topicId);
+                        router.push(`/instructors/topics-details/new-lesson?topicId=` + topicId);
                     }}
                 >
                     Add Lesson
