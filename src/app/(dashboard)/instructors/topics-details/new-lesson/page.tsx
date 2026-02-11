@@ -107,7 +107,7 @@ const NewLesson = () => {
                     onChange={handleFileChange}
                     className="flex flex-col w-full px-2 text-sm text-gray-500 border rounded-lg cursor-pointer"
                 />
-                <p className="mt-4 font-medium text-blue-600">{status}</p>
+                <p className="mt-4 font-medium text-muted-foreground">{status}</p>
             </div>
             {/*  Create Lesson Form Data  */}
             <CreateLessonForm onSubmit={handleSubmit} initialData={initialData}/>
