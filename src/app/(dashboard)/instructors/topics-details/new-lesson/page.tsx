@@ -72,7 +72,7 @@ const NewLesson = () => {
     const handleSubmit = async (data: LessonFormData) => {
 
         if(!uploaded || !fileFound) return;
-        alert("Creating Lesson")
+
         const lesson: Omit<Lesson, "id"> = {
             topicId: topicId!,
             videoId: videoS3Key,
