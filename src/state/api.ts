@@ -107,15 +107,15 @@ export const api = createApi({
         }),
         getSubject: build.query<Subject, string>({
             query: (subjectId) => `/subjects/${subjectId}`,
-            providesTags: (result, error, id) => [{ type: "SubjectDetails", id }],
-            async onQueryStarted(_, { queryFulfilled }) {
+            providesTags: (result, error, id) => [{type: "SubjectDetails", id}],
+            async onQueryStarted(_, {queryFulfilled}) {
                 await withToast(queryFulfilled, {
                     error: "Failed to load subject details.",
                 });
             },
         }),
         createSubject: build.mutation<Subject, { subject: Subject }>({
-            query: ({ subject}) => {
+            query: ({subject}) => {
                 return {
                     url: "/subjects",
                     method: "POST",
@@ -124,11 +124,11 @@ export const api = createApi({
             },
 
             invalidatesTags: (result, error) => [
-                { type: "Subjects"},
-                { type: "Subjects", id: "LIST" },
+                {type: "Subjects"},
+                {type: "Subjects", id: "LIST"},
             ],
 
-            async onQueryStarted(_, { queryFulfilled }) {
+            async onQueryStarted(_, {queryFulfilled}) {
 
                 toast.promise(queryFulfilled, {
                     loading: "Creating subject...",
@@ -172,11 +172,11 @@ export const api = createApi({
             },
 
             invalidatesTags: (result, error) => [
-                { type: "Topics"},
-                { type: "Topics", id: "LIST" },
+                {type: "Topics"},
+                {type: "Topics", id: "LIST"},
             ],
 
-            async onQueryStarted(_, { queryFulfilled }) {
+            async onQueryStarted(_, {queryFulfilled}) {
                 const promise = queryFulfilled;
 
                 toast.promise(queryFulfilled, {
@@ -190,8 +190,8 @@ export const api = createApi({
         }),
         getTopic: build.query<Topic, string>({
             query: (topicId) => `/topics/${topicId}`,
-            providesTags: (result, error, id) => [{ type: "TopicDetails", id }],
-            async onQueryStarted(_, { queryFulfilled }) {
+            providesTags: (result, error, id) => [{type: "TopicDetails", id}],
+            async onQueryStarted(_, {queryFulfilled}) {
                 await withToast(queryFulfilled, {
                     error: "Failed to load topics details.",
                 });
@@ -219,33 +219,93 @@ export const api = createApi({
         }),
         getLesson: build.query<Lesson, string>({
             query: (lessonId) => `/lessons/${lessonId}`,
-            providesTags: (result, error, id) => [{ type: "LessonDetails", id }],
-            async onQueryStarted(_, { queryFulfilled }) {
-                await withToast(queryFulfilled, {
-                    error: "Failed to load lesson details.",
+            providesTags: (result, error, id) => [{type: "LessonDetails", id}],
+            async onQueryStarted(_, {queryFulfilled}) {
+                toast.promise(queryFulfilled, {
+                    loading: "Fetching Lesson...",
+                    error: "Failed to fetch lesson.",
                 });
             },
         }),
-        createLesson: build.mutation<Lesson, { topicId: string; formData: FormData }>({
-            query: ({ topicId, formData }) => {
-                formData.append("topicId", topicId);
+        createLesson: build.mutation<Lesson, Omit<Lesson, 'id'>>({
+            query: (lessonData) => ({
+                url: "/lessons",
+                method: "POST",
+                body: lessonData,
+            }),
 
-                return {
-                    url: "/lessons",
-                    method: "POST",
-                    body: formData,
-                };
-            },
-
-            invalidatesTags: (result, error, { topicId }) => [
-                { type: "Lessons", id: topicId },
-                { type: "Lessons", id: "LIST" },
+            invalidatesTags: (result, error, {topicId}) => [
+                {type: "Lessons", id: topicId},
+                {type: "Lessons", id: "LIST"},
             ],
 
-            async onQueryStarted(_, { queryFulfilled }) {
-                await withToast(queryFulfilled, {
-                    error: "Failed to create lesson.",
+            async onQueryStarted(_, {queryFulfilled}) {
+                toast.promise(queryFulfilled, {
+                    loading: "Creating Lesson...",
                     success: "Lesson created successfully!",
+                    error: "Failed to create lesson.",
+                });
+            },
+        }),
+    }),
+});
+
+export const s3api = createApi({
+    baseQuery: fetchBaseQuery({
+        baseUrl: process.env.NEXT_PUBLIC_HOST_URL,
+        prepareHeaders: async (headers) => {
+            headers.set("Content-Type", `application/json`);
+            console.log(headers.entries());
+            return headers;
+        }
+    }),
+    reducerPath: "s3api",
+    tagTypes: [],
+    endpoints: (build) => ({
+        // Getting signed URL
+        getSignedUrl: build.mutation<{ uploadUrl: string; fileKey: string }, { fileName: string; fileType: string }>({
+            query: (payload) => {
+                return {
+                    url: "/upload",
+                    method: "POST",
+                    body: payload,
+                }
+            },
+
+            invalidatesTags: [],
+
+            async onQueryStarted(_, {queryFulfilled}) {
+                toast.promise(queryFulfilled, {
+                    loading: "Getting signed url...",
+                    success: "Received signed url!",
+                    error: "Failed getting signed url.",
+                });
+            },
+        }),
+        uploadVideoToS3: build.mutation<null, { uploadUrl: string; file: File }>({
+            queryFn: async ({uploadUrl, file}) => {
+                try {
+                    const response = await fetch(uploadUrl, {
+                        method: "PUT",
+                        body: file,
+                        headers: {"Content-Type": file.type},
+                    });
+
+                    if (!response.ok) throw new Error('S3 Upload Failed');
+
+                    return {data: null };
+                } catch (error) {
+                    return {error: {status: 'CUSTOM_ERROR', error: String(error)}};
+                }
+            },
+
+            invalidatesTags: [],
+
+            async onQueryStarted(_, {queryFulfilled}) {
+                toast.promise(queryFulfilled, {
+                    loading: "Uploading video...",
+                    success: "Video uploaded successfully!",
+                    error: "Failed to upload video.",
                 });
             },
         }),
@@ -260,8 +320,14 @@ export const {
     useCreateTopicMutation,
     useGetTopicQuery,
     useGetLessonsQuery,
+    useGetLessonQuery,
     useGetStudentEnrollmentsQuery,
-    useCreateSubjectMutation
+    useCreateSubjectMutation,
+    useCreateLessonMutation
 } = api;
 
+export const {
+    useGetSignedUrlMutation,
+    useUploadVideoToS3Mutation
+} = s3api;
 

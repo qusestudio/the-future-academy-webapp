@@ -51,7 +51,7 @@ interface Topic {
 
 interface Lesson {
     id: string,
-    topic_id: string,
+    topicId: string,
     videoId: string,
     title: string,
     description: string

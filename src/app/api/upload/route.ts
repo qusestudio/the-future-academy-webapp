@@ -8,6 +8,7 @@ interface UploadRequest {
 }
 
 export async function POST(request: NextRequest) {
+    console.log("Requesting signed url")
     try {
         const {fileName, fileType}: UploadRequest = await request.json();
         const s3Client = new S3Client({ region: "af-south-1" });
@@ -20,6 +21,7 @@ export async function POST(request: NextRequest) {
         })
 
         const uploadUrl = await getSignedUrl(s3Client, command, { expiresIn: 900 });
+        console.log(uploadUrl);
 
         return NextResponse.json({ uploadUrl, fileKey });
     } catch (error: any) {

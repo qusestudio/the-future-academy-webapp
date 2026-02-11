@@ -29,13 +29,22 @@ export const subjectSchema = z.object({
     term: z.coerce.number(),
 });
 
-export type SubjectFormData = z.output<typeof subjectSchema>;
+export type SubjectFormData = z.infer<typeof subjectSchema>;
 
 export const topicSchema = z.object({
     title: z.string().min(1, "Title is required"),
 });
 
 export type TopicFormData = z.output<typeof topicSchema>;
+
+export const lessonSchema = z.object({
+    title: z.string().min(5, "Title is required"),
+    description: z.string().min(5, "Description is required"),
+    // videoId: z.string().min(1, "Video is required"),
+    // topicId: z.string().min(1, "Topic ID is required"),
+});
+
+export type LessonFormData = z.infer<typeof lessonSchema>;
 
 export const settingsSchema = z.object({
     name: z.string().min(1, "Name is required"),

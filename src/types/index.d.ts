@@ -1,7 +1,7 @@
 import {LucideIcon} from "lucide-react";
 import {AuthUser} from "aws-amplify/auth";
 import {MotionProps as OriginalMotionProps} from "framer-motion";
-import {SubjectFormData, TopicFormData} from "@/lib/schemas";
+import {LessonFormData, SubjectFormData, TopicFormData} from "@/lib/schemas";
 
 declare module "framer-motion" {
     interface MotionProps extends OriginalMotionProps {
@@ -41,6 +41,11 @@ declare global {
         isDashboard: boolean;
     }
 
+    interface VideoPlayerProps {
+        src: string;
+        poster?: string;
+    }
+
     interface AppSidebarProps {
         userType: "instructor" | "student";
     }
@@ -53,6 +58,11 @@ declare global {
     interface TopicFormProps {
         initialData?: TopicFormData;
         onSubmit: (data: TopicFormData) => Promise<void>;
+    }
+
+    interface LessonFormProps {
+        initialData?: LessonFormData;
+        onSubmit: (data: LessonFormData) => Promise<void>;
     }
 
     interface CreateSubjectFormProps {
