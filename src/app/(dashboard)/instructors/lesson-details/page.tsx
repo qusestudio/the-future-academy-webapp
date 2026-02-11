@@ -46,6 +46,13 @@ const LessonDetails = () => {
                 <VideoPlayer src={`${CLOUDFRONT}/${lesson?.videoId}`} />
             </section>
 
+            <section className="w-full max-w-7xl">
+                <p className={"text-lg font-medium text-muted-foreground"}>Description:</p>
+                <div className="w-full font-medium flex justify-between">
+                    <p className="text-black ">{lesson?.description}</p>
+                </div>
+            </section>
+
         </div>
     );
 };
