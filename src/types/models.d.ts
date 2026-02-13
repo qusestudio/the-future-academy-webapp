@@ -14,10 +14,11 @@ interface InstructorUser {
     phoneNumber: string
 }
 
-interface StudentAccount {
+interface StudentProfile {
     id: string,
     firstName: string,
     lastName: string,
+    preferredName: string,
     dateOfBirth: Date;
     grade: number
 }

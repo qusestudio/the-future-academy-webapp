@@ -6,7 +6,7 @@ import {
     InstructorUser,
     Lesson,
     NotEnrolled,
-    StudentEnrollment,
+    StudentEnrollment, StudentProfile,
     StudentUser,
     Subject,
     Topic
@@ -31,6 +31,51 @@ export const api = createApi({
     endpoints: (build) => ({
         // Authentication
         getAuthUser: build.query<User, void>({
+            queryFn: async (_, _queryApi, _extraoptions, fetchWithBQ) => {
+                try {
+                    const session = await fetchAuthSession();
+                    const {idToken} = session.tokens ?? {};
+                    const user = await getCurrentUser(); // Fetching info from cognito
+                    const userRole = idToken?.payload["custom:role"] as string;
+
+                    const endpoint =
+                        userRole === "instructor"
+                            ? `/instructors/${user.userId}`
+                            : `/students/${user.userId}`;
+
+                    // Check if the user exists in our server
+                    console.log("Checking If user exists in our server")
+
+                    let userDetailsResponse = await fetchWithBQ(endpoint);
+                    console.log(userDetailsResponse.data);
+                    console.log(userDetailsResponse.error);
+
+                    // If user doesn't exist, create new user
+                    if (userDetailsResponse.error && userDetailsResponse.error.status === 404) {
+                        console.log("User Not Found Error")
+                        userDetailsResponse = await createNewUserInDatabase(
+                            user,
+                            idToken,
+                            userRole,
+                            fetchWithBQ
+                        );
+                    }
+
+                    return {
+                        data: {
+                            cognitoInfo: {...user},
+                            userInfo: userDetailsResponse.data as StudentUser | InstructorUser, // discrepancy
+                            userRole
+                        }
+                    }
+                } catch (error: any) {
+                    return {
+                        error: error.message || "Could not fetch user data"
+                    }
+                }
+            }
+        }),
+        getUserProfile: build.query<User, void>({
             queryFn: async (_, _queryApi, _extraoptions, fetchWithBQ) => {
                 try {
                     const session = await fetchAuthSession();
@@ -199,8 +244,6 @@ export const api = createApi({
                 });
             },
         }),
-
-        //
 
         // Topics endpoints
         getTopicsBySubject: build.query<Topic[], string>({
