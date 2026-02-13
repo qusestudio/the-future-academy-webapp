@@ -31,8 +31,24 @@ interface InstructorAccount {
 
 interface Enrollment {
     id: string,
+    studentId: string,
     subjectId: string,
-    studentAccountId: string,
+}
+
+interface StudentEnrollment {
+    studentId: string,
+    studentName: string,
+    subjectId: string,
+    subjectTitle: string,
+    grade: number,
+    term: number
+}
+
+interface NotEnrolled {
+    subjectId: string,
+    subjectTitle: string,
+    grade: number,
+    term: number
 }
 
 interface Subject {

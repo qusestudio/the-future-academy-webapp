@@ -87,7 +87,7 @@ const AppSidebar = ({userType}: AppSidebarProps) => {
                 </SidebarMenu>
             </SidebarHeader>
             <SidebarContent className={` flex flex-col  justify-between pb-5 ${open? "px-4" : "" }`}>
-                <SidebarMenu className="space-y-2">
+                <SidebarMenu className="space-y-1">
                     {navLinks.map((link) => {
                         const isActive = pathname === link.href || pathname.includes("/instructors/"+link.href);
                         return (
@@ -95,9 +95,9 @@ const AppSidebar = ({userType}: AppSidebarProps) => {
                                 <SidebarMenuButton
                                     asChild
                                     className={cn(
-                                        "flex rounded-sm transition-all duration-300 border-2 items-center justify-start px-7 py-4",
+                                        "flex rounded-sm transition-all duration-300  items-center justify-start px-7 py-5",
                                         isActive
-                                            ? "bg-yellow-200 border-black "
+                                            ? "bg-yellow-300 "
                                             : "text-gray-100 border-transparent hover:bg-primary-100",
                                         open ? "text-black" : "ml-[5px]"
                                     )}

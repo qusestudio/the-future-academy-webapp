@@ -1,28 +1,23 @@
 import React from 'react'
-import Image from "next/image";
 import {Button} from "@/components/ui/button";
-import {usePathname, useRouter} from "next/navigation";
 import {LayoutDashboardIcon} from 'lucide-react';
+import {StudentEnrollment} from "@/types/models";
 
-const MyLearningListItem = ({itemProps}: { itemProps: MyLearningListItemProps }) => {
-    const router = useRouter();
-    const pathname = usePathname();
+const MyLearningListItem = ({itemProps, onStart}: { itemProps: StudentEnrollment, onStart: () => void }) => {
     return (
-        <div className="w-full items-end hover:cursor-pointer hover:shadow-lg transition-all duration-300 flex gap-x-5 justify-between border p-4 rounded-md">
+        <div className="w-full items-end hover:cursor-pointer hover:shadow-lg transition-all duration-300 flex gap-x-5 justify-between border-2 p-4 rounded-md">
             <div className="flex gap-x-5 items-center">
                 <LayoutDashboardIcon />
-                <p className="flex flex-col">
-                    <span>{itemProps.name}</span>
-                    <span className="text-xs">{itemProps.topicCount} Topics</span>
+                <p className="flex font-medium flex-col">
+                    <span>{itemProps.subjectTitle}</span>
+                    <span className="text-xs">Grade {itemProps.grade}</span>
                 </p>
             </div>
             <Button
-                onClick={()=> {
-                    router.push(`${pathname}/${itemProps.id}`)
-                }}
+                onClick={onStart}
                 className="text-xs self-end hover:cursor-pointer bg-secondary-450 hover:bg-secondary-600 rounded text-black"
             >
-                Continue
+                Start Learning
             </Button>
         </div>
     )

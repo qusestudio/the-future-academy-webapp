@@ -46,7 +46,7 @@ const DashboardLayout = ({children}: { children: React.ReactNode }) => {
                             className="mr-2 data-[orientation=vertical]:h-4"
                         />
                     </header>
-                    <div className="flex w-full h-[80vh] flex-1 flex-col gap-4 p-4 px-6">
+                    <div className="flex w-full items-center h-[80vh] flex-1 flex-col gap-4 px-6">
                         {children}
                     </div>
                 </SidebarInset>
