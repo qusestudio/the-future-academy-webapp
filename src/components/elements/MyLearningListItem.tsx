@@ -15,7 +15,7 @@ const MyLearningListItem = ({itemProps, onStart}: { itemProps: StudentEnrollment
             </div>
             <Button
                 onClick={onStart}
-                className="text-xs self-end hover:cursor-pointer bg-secondary-450 hover:bg-secondary-600 rounded text-black"
+                className="text-xs self-end font-semibold hover:cursor-pointer bg-secondary-450 hover:bg-secondary-600 rounded text-black"
             >
                 Start Learning
             </Button>
