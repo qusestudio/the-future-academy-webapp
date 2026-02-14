@@ -9,9 +9,14 @@ import {Field, FieldLabel} from "@/components/ui/field";
 import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover";
 import {Button} from "@/components/ui/button";
 import {Calendar} from "@/components/ui/calendar";
+import {StudentProfile} from "@/types/models";
+import {useCreateProfileMutation, useGetAuthUserQuery, useGetUserProfileQuery} from "@/state/api";
 
 
 const OnboardingPage = () => {
+    const [createProfile] = useCreateProfileMutation();
+    const {data: authUser, isLoading} = useGetAuthUserQuery();
+
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [highSchool, setHighSchool] = useState("");
@@ -19,10 +24,28 @@ const OnboardingPage = () => {
     const [open, setOpen] = React.useState(false)
     const [date, setDate] = React.useState<Date | undefined>(undefined);
 
+
+
     // create account
-    const handleCreateProfile = () => {
+    const handleCreateProfile = async () => {
+        if (!authUser) {
+            return;
+        }
+
+        const newProfile: Omit<StudentProfile, "id"> = {
+            studentId: authUser!.cognitoInfo.userId!,
+            firstName: firstName,
+            lastName: lastName,
+            dateOfBirth: date!.toISOString(),
+            schoolName: highSchool,
+            grade: grade!
+        }
+
+        await createProfile(newProfile);
 
     }
+
+
 
 
     return (
@@ -145,7 +168,7 @@ const OnboardingPage = () => {
                                         />
                                     </Field>
                                 </div>
-                                <StepperFooter nextDisabled={!highSchool.trim() || !grade || (grade! > 12 || grade! < 10)}/>
+                                <StepperFooter onCreateProfile={handleCreateProfile} nextDisabled={!highSchool.trim() || !grade || (grade! > 12 || grade! < 10)}/>
                             </div>
                         </Step>
                     </Stepper>

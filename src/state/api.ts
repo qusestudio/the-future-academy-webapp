@@ -1,6 +1,6 @@
 import {createApi, fetchBaseQuery} from "@reduxjs/toolkit/query/react";
 import {fetchAuthSession, getCurrentUser} from "aws-amplify/auth"
-import {createNewUserInDatabase, withToast} from "@/lib/utils";
+import {createNewProfileInDatabase, createNewUserInDatabase, withToast} from "@/lib/utils";
 import {
     Enrollment,
     InstructorUser,
@@ -12,6 +12,7 @@ import {
     Topic
 } from "@/types/models";
 import {toast} from "sonner";
+import {any} from "zod";
 
 export const api = createApi({
     baseQuery: fetchBaseQuery({
@@ -27,7 +28,7 @@ export const api = createApi({
         }
     }),
     reducerPath: "api",
-    tagTypes: ["Instructors", "Students", "AvailableSubjects","Subjects", "NotEnrolled","topic", "Lessons", "LessonDetails", "Enrollments", "Enrollment", "SubjectDetails", "Topics", "TopicDetails"],
+    tagTypes: ["Instructors", "StudentProfile","Students", "AvailableSubjects","Subjects", "NotEnrolled","topic", "Lessons", "LessonDetails", "Enrollments", "Enrollment", "SubjectDetails", "Topics", "TopicDetails"],
     endpoints: (build) => ({
         // Authentication
         getAuthUser: build.query<User, void>({
@@ -75,8 +76,8 @@ export const api = createApi({
                 }
             }
         }),
-        getUserProfile: build.query<User, void>({
-            queryFn: async (_, _queryApi, _extraoptions, fetchWithBQ) => {
+        getUserProfile: build.query<StudentProfile, Omit<StudentProfile, "id">>({
+            queryFn: async (profile, _queryApi, _extraoptions, fetchWithBQ) => {
                 try {
                     const session = await fetchAuthSession();
                     const {idToken} = session.tokens ?? {};
@@ -85,33 +86,27 @@ export const api = createApi({
 
                     const endpoint =
                         userRole === "instructor"
-                            ? `/instructors/${user.userId}`
-                            : `/students/${user.userId}`;
+                            ? `/instructor-profiles/${user.userId}`
+                            : `/student-profiles/${user.userId}`;
 
                     // Check if the user exists in our server
                     console.log("Checking If user exists in our server")
-
                     let userDetailsResponse = await fetchWithBQ(endpoint);
                     console.log(userDetailsResponse.data);
                     console.log(userDetailsResponse.error);
 
-                    // If user doesn't exist, create new user
+                    // If user profile doesn't exist, create new user profile
                     if (userDetailsResponse.error && userDetailsResponse.error.status === 404) {
-                        console.log("User Not Found Error")
-                        userDetailsResponse = await createNewUserInDatabase(
-                            user,
-                            idToken,
+                        console.log("Student Profile Not Found Error")
+                        userDetailsResponse = await createNewProfileInDatabase(
+                            profile,
                             userRole,
                             fetchWithBQ
                         );
                     }
 
                     return {
-                        data: {
-                            cognitoInfo: {...user},
-                            userInfo: userDetailsResponse.data as StudentUser | InstructorUser, // discrepancy
-                            userRole
-                        }
+                        data: userDetailsResponse.data as StudentProfile
                     }
                 } catch (error: any) {
                     return {
@@ -120,18 +115,47 @@ export const api = createApi({
                 }
             }
         }),
+        // Profile
+        createProfile: build.mutation<StudentProfile, Omit<StudentProfile, 'id'>>({
+            query: (profile) => ({
+                url: "/student-profiles",
+                method: "POST",
+                body: profile,
+            }),
+
+            invalidatesTags: ["StudentProfile"],
+
+            async onQueryStarted(_, {queryFulfilled}) {
+                toast.promise(queryFulfilled, {
+                    loading: "Setting your profile...",
+                    success: "Profile set up successfully!",
+                    error: "We are sorry something happened.",
+                });
+            },
+        }),
+
+        getProfile: build.query<StudentProfile, string>({
+            query: (studentId) => `/student-profiles/${studentId}`,
+            // providesTags: (result, error, id) => [{type: "StudentProfile", id}],
+            providesTags: ["StudentProfile"],
+            async onQueryStarted(_, {queryFulfilled}) {
+                await withToast(queryFulfilled, {
+                    error: "Failed to load student profile.",
+                });
+            },
+        }),
 
 
         // Enrollment endpoints
-        getNonEnrollments: build.query<NotEnrolled[], string>({
-            query: (studentId) => {
-                return {url: `/students/${studentId}/not-enrolled`};
+        getNonEnrollments: build.query<NotEnrolled[], {studentId: string, grade: number}>({
+            query: ({studentId, grade}) => {
+                return {url: `/students/${studentId}/grade/${grade}/not-enrolled`};
             },
             providesTags: ["AvailableSubjects"],
 
             async onQueryStarted(_, {queryFulfilled}) {
                 await withToast(queryFulfilled, {
-                    error: "Failed to fetch subjects.",
+                    error: "Failed to fetch available subjects.",
                 });
             },
         }),
@@ -428,7 +452,10 @@ export const {
     useGetEnrollmentQuery,
     useGetNonEnrollmentsQuery,
     useCreateEnrollmentMutation,
+    useCreateProfileMutation,
+    useGetProfileQuery,
     useCreateSubjectMutation,
+    useGetUserProfileQuery,
     useCreateLessonMutation
 } = api;
 

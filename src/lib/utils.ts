@@ -1,6 +1,8 @@
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { toast } from "sonner";
+import {StudentProfile} from "@/types/models";
+import {newDate} from "date-fns-jalali";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -8,6 +10,19 @@ export function cn(...inputs: ClassValue[]) {
 
 export function formatEnumString(str: string) {
   return str.replace(/([A-Z])/g, " $1").trim();
+}
+
+export function formatGrade(grade: number) {
+  switch (grade) {
+    case 10:
+      return "TEN";
+    case 11:
+      return "ELEVEN";
+    case 12:
+      return "TWELVE";
+    default:
+      return "";
+  }
 }
 
 export function formatPriceValue(value: number | null, isMin: boolean) {
@@ -74,6 +89,27 @@ export const createNewUserInDatabase = async (
       email: idToken?.payload?.email || "",
       phoneNumber: "",
     },
+  });
+
+  if (createUserResponse.error) {
+    throw new Error("Failed to create user record");
+  }
+
+  return createUserResponse;
+};
+
+export const createNewProfileInDatabase = async (
+    profile: Omit<StudentProfile, "id">,
+    userRole: string,
+    fetchWithBQ: any
+): Promise<any> => {
+  const createEndpoint =
+      userRole?.toLowerCase() === "instructor" ? "/instructor-profiles" : "/student-profiles";
+
+  const createUserResponse = await fetchWithBQ({
+    url: createEndpoint,
+    method: "POST",
+    body: profile,
   });
 
   if (createUserResponse.error) {

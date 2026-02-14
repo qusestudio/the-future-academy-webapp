@@ -93,9 +93,10 @@ export function StepperHeader() {
 
 interface StepperFooterProps {
     nextDisabled?: boolean;
+    onCreateProfile?: () => void;
 }
 
-export function StepperFooter({ nextDisabled }: StepperFooterProps) {
+export function StepperFooter({ nextDisabled, onCreateProfile }: StepperFooterProps) {
     const { step, totalSteps, next, back } = useStepper();
 
     return (
@@ -113,7 +114,7 @@ export function StepperFooter({ nextDisabled }: StepperFooterProps) {
             )}
 
             <button
-                onClick={next}
+                onClick={step === totalSteps ? onCreateProfile : next}
                 disabled={nextDisabled}
                 className="rounded font-medium hover:cursor-pointer bg-neutral-900 px-4 py-2 text-sm text-white disabled:opacity-40"
             >

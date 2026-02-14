@@ -16,10 +16,11 @@ interface InstructorUser {
 
 interface StudentProfile {
     id: string,
+    studentId: string
     firstName: string,
     lastName: string,
-    preferredName: string,
-    dateOfBirth: Date;
+    schoolName: string,
+    dateOfBirth: string;
     grade: number
 }
 

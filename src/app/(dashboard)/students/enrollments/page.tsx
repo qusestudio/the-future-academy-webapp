@@ -1,13 +1,23 @@
 "use client"
 
 import React from 'react'
-import {useCreateEnrollmentMutation, useGetAuthUserQuery, useGetNonEnrollmentsQuery} from "@/state/api";
+import {
+    useCreateEnrollmentMutation,
+    useGetAuthUserQuery,
+    useGetNonEnrollmentsQuery,
+    useGetProfileQuery
+} from "@/state/api";
 import {EnrollmentListItem} from "@/components/elements/List";
+import {formatGrade} from "@/lib/utils";
 
 const StudentEnrollments = () => {
 
     const {data: authUser, isLoading: authLoading} = useGetAuthUserQuery();
-    const {data: subjects, isLoading} = useGetNonEnrollmentsQuery( authUser!.cognitoInfo.userId, {skip: !authUser});
+    const {data: profile, isLoading: profileLoading} = useGetProfileQuery(
+        authUser?.cognitoInfo.userId || "",
+        {skip: !authUser?.cognitoInfo.userId}
+    );
+    const {data: subjects, isLoading} = useGetNonEnrollmentsQuery( {studentId: authUser!.cognitoInfo.userId, grade: profile!.grade! }, {skip: !authUser});
     const [createEnrollment] = useCreateEnrollmentMutation();
 
     const grade: number = 10;
@@ -48,7 +58,7 @@ const StudentEnrollments = () => {
                     CAPS-aligned subjects that will help you prepare for your exams and your future.
                 </p>
                 <p className="font-semibold text-gray-400">
-                    GRADE {grade_text}
+                    GRADE {formatGrade(profile!.grade)}
                 </p>
             </section>
             <section className="flex  flex-col gap-y-2">

@@ -4,6 +4,7 @@ import {Amplify} from "aws-amplify";
 import {Authenticator, Heading, Radio, RadioGroupField, useAuthenticator, View} from "@aws-amplify/ui-react";
 import {usePathname, useRouter} from "next/navigation";
 import {useEffect} from "react";
+import {useGetAuthUserQuery, useGetProfileQuery} from "@/state/api";
 
 Amplify.configure({
     Auth: {
@@ -133,30 +134,26 @@ const formFields = {
             label: "Password",
             isRequired: true
         },
-        // confirmPassword: {
-        //     order: 4,
-        //     placeholder: "Confirm your password",
-        //     label: "Confirm Password",
-        //     isRequired: true
-        // }
     }
 }
 
 const Auth = ({children}:{children: React.ReactNode}) =>  {
-
     const { user } = useAuthenticator((context) => [context.user]);
     const router = useRouter();
     const pathname = usePathname();
 
+
     const isAuthPage = pathname.match(/^\/(signin|signup)$/);
     const isDashboardPage = pathname.startsWith("/instructors") || pathname.startsWith("/students");
+    const isOnboardingPage = pathname.startsWith("/onboarding");
 
     //Redirect authenticated users away from auth pages
     useEffect(() => {
+
         if (user && isAuthPage) {
             router.push("/");
         }
-    }, [user, isAuthPage, router]);
+    }, [user, isAuthPage, router, isOnboardingPage]);
 
     // Allow access to public pages without authentication
     if (!isAuthPage && !isDashboardPage) {
