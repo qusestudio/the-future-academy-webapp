@@ -31,7 +31,7 @@ export function Header() {
         <header className="fixed backdrop-blur-2xl flex justify-center text-[#e1e1e1]  z-40 top-0 left-0 w-full">
 
             {/* Desktop nav */}
-            <header className="w-full px-10 hidden md:flex py-10 items-center justify-between max-w-400">
+            <header className="w-full px-10 hidden lg:flex py-10 items-center justify-between max-w-400">
                 <p className="font-medium text-[20px]">The Future Academy</p>
                 <nav className="text-xs flex font-medium gap-x-5 uppercase">
                     <Link href={"/"}>
@@ -59,7 +59,7 @@ export function Header() {
             </header>
 
             {/* Mobile header */}
-            <div className="md:hidden  border-[#2c2c2c]  w-full backdrop-blur-2xl">
+            <div className="lg:hidden  border-[#2c2c2c]  w-full backdrop-blur-2xl">
                 <div className="flex w-full backdrop-blur-2xl items-center gap-x-2 px-10 py-5">
                     <button
                         type="button"
@@ -85,6 +85,9 @@ export function Header() {
                                 <link.icon size={40} />
                             </div>
                         ))}
+                        <button className="flex bg-[#942D00] justify-center rounded-xs px-10 font-medium py-2 gap-x-5 uppercase">
+                            Log in
+                        </button>
                     </nav>
                 )}
             </div>
