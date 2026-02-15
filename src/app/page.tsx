@@ -1,37 +1,13 @@
 import Link from "next/link";
 import {CircleArrowRight} from "lucide-react";
 import GlowingButton from "@/components/elements/GlowingButton";
+import {Header} from "@/components/elements/Header";
 
 const Home = () => {
     return (
         <div className="w-full flex flex-col items-center">
-            <div className="w-full fixed flex-col flex items-center backdrop-blur-2xl">
-                <header className="w-full px-10   flex py-10 items-center justify-between max-w-400">
-                    <p className="font-medium text-[20px]">The Future Academy</p>
-                    <nav className="text-xs flex font-medium gap-x-5 uppercase">
-                        <Link href={"/"}>
-                            Home
-                        </Link>
-                        <Link href={"/"}>
-                            Features
-                        </Link>
-                        <Link href={"/"}>
-                            Subjects
-                        </Link>
-                        <Link href={"/"}>
-                            For Students
-                        </Link>
-                        <Link href={"/"}>
-                            For Instructors
-                        </Link>
-                        <Link href={"/"}>
-                            Pricing
-                        </Link>
-                    </nav>
-                    <button className="flex bg-[#942D00] rounded-xs px-10 font-medium py-2 text-xs gap-x-5 uppercase">
-                        Log in
-                    </button>
-                </header>
+            <div className="w-full fixed flex-col flex items-center">
+                <Header />
             </div>
             <main className="max-w-400 px-10 w-full">
                 <section className="w-full min-h-screen justify-between gap-y-10 pt-50 pb-10 items-center flex flex-col">
@@ -42,7 +18,7 @@ const Home = () => {
                             </p>
                             <CircleArrowRight className="stroke-1 bg-[#942D00] rounded-full"/>
                         </div>
-                        <h1 className="text-7xl text-center font-normal">
+                        <h1 className="sm:text-7xl text-5xl text-center font-normal">
                             Education Reimagined
                         </h1>
                         <p className="text-[14px] max-w-3xl text-center leading-tight">
@@ -59,7 +35,7 @@ const Home = () => {
                     </div>
                     {/*    */}
                     <div className="w-full self-end">
-                        <p className="max-w-5xl lg:max-w-2xl xl:max-w-5xl font-space text-2xl sm:text-3xl  lg:text-4xl xl:text-5xl">
+                        <p className="max-w-5xl lg:max-w-2xl xl:max-w-5xl font-space text-3xl sm:text-3xl  lg:text-4xl xl:text-5xl">
                             We are a high-performance-first institution, passionate about shaping future leaders into
                             self-reliant powerhouses.
                         </p>
