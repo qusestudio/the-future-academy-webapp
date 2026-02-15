@@ -41,17 +41,16 @@ const Home = () => {
                     {/*    */}
                     <div className="w-full self-end">
                         <p className="max-w-5xl lg:max-w-2xl xl:max-w-5xl font-space text-3xl sm:text-3xl  lg:text-4xl xl:text-5xl">
-                            We are a high-performance-first institution, passionate about shaping future leaders into
-                            self-reliant powerhouses.
+                            Transforming education through structured, high-performance learning, giving students an academic advantage beyond the classroom.
                         </p>
                     </div>
                 </section>
             </main>
             <section
-                className="w-full bg-linear-150 from-[#9E9E9E] via-[#9E9E9E] to-[#942D00] justify-between items-center gap-y-5 py-15  flex flex-col">
+                className="w-full bg-linear-150 max-sm:h-screen from-[#9E9E9E] via-[#9E9E9E] to-[#942D00] justify-between items-center gap-y-5 py-15  flex flex-col">
                 <div className="px-10 max-sm:px-5 max-w-400 w-full">
-                    <p className="gap-y-10 font-space text-6xl text-black py-10  w-full  flex flex-col">
-                        We invest into the excellence of our students.
+                    <p className="gap-y-10 font-space text-7xl text-black py-10  w-full  flex flex-col">
+                        We invest in the potential of our students.
                     </p>
 
                     <button className="text-black font-medium  rounded-full">
@@ -66,7 +65,7 @@ const Home = () => {
                         Features
                     </p>
                 </div>
-                <div className="px-10 max-sm:px-5 gap-x-10 pb-10 gap-y-5 font-space grid max-md:grid-cols-1 grid-cols-3 max-w-400 w-full">
+                <div className="px-10 max-sm:px-5 gap-x-3 xl:gap-x-10 pb-10 gap-y-5 font-space grid max-md:grid-cols-1 grid-cols-3 max-w-400 w-full">
                     <div className="border-4 dark:border-white flex items-end  pt-20 rounded-xl p-5 text-2xl sm:text-3xl lg:text-4xl xl:text-5xl">
                         24/7 Access to On-Demand Video Lessons
                     </div>
