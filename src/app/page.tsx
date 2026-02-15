@@ -10,7 +10,7 @@ const Home = () => {
                 <Header />
             </div>
             <main className="max-w-400 px-10 w-full">
-                <section className="w-full min-h-screen justify-between gap-y-10 pt-50 pb-10 items-center flex flex-col">
+                <section className="w-full min-h-screen justify-between gap-y-10 pt-50 pb-20 items-center flex flex-col">
                     <div className="gap-y-10 py-10 justify-center items-center flex flex-col">
                         <div className="bg-[#111] flex items-center gap-x-2 rounded-full text-sm pl-2 px-1.5 py-0.5">
                             <p className="text-[13px]">
