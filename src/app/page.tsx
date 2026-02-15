@@ -2,6 +2,7 @@ import Link from "next/link";
 import {CircleArrowRight} from "lucide-react";
 import GlowingButton from "@/components/elements/GlowingButton";
 import {Header} from "@/components/elements/Header";
+import {Separator} from "@/components/ui/separator";
 
 const Home = () => {
     return (
@@ -27,11 +28,15 @@ const Home = () => {
                         </p>
                         <button
                             className="flex dark:bg-[#FFF] bg-black dark:text-black text-white rounded-xs px-10 font-semibold py-2 text-xs gap-x-5 uppercase">
-                            sign up
+                            Join the academy
                         </button>
-                        <p className="text-sm text-center leading-tight">
-                            CAPS-Aligned Curriculum
-                        </p>
+                        <div className="text-xs w-full max-w-xl text-center gap-x-1 items-center flex h-5 leading-tight">
+                            <span className="w-full">CAPS-Aligned Curriculum</span>
+                            <Separator className="bg-white" orientation={"vertical"} />
+                            <span className="w-full">Grade 10 - 12</span>
+                            <Separator className="bg-white" orientation={"vertical"} />
+                            <span className="w-full">University Readiness</span>
+                        </div>
                     </div>
                     {/*    */}
                     <div className="w-full self-end">
