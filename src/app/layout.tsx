@@ -9,6 +9,14 @@ export const metadata: Metadata = {
   description: "Online High School",
 };
 
+import {Space_Grotesk} from "next/font/google";
+
+const spaceMono = Space_Grotesk({
+    weight: "400",
+    variable: "--font-space-mono",
+    subsets: ["latin"],
+});
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -17,7 +25,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${chillax.className} antialiased`}
+        className={`${chillax.className} ${spaceMono.variable} antialiased`}
       >
         <Providers>
             {children}

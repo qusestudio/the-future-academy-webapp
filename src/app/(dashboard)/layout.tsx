@@ -61,7 +61,7 @@ const DashboardLayout = ({children}: { children: React.ReactNode }) => {
                             orientation="vertical"
                             className="mr-2 data-[orientation=vertical]:h-4"
                         />
-                        <p className="">{profile?.firstName}</p>
+                        <p className="font-medium">{profile?.firstName}</p>
                     </header>
                     <div className="flex w-full items-center h-[80vh] flex-1 flex-col gap-4 px-6">
                         {children}
