@@ -60,7 +60,7 @@ export function Header() {
 
             {/* Mobile header */}
             <div className="lg:hidden  border-[#2c2c2c]  w-full backdrop-blur-2xl">
-                <div className="flex w-full backdrop-blur-2xl items-center gap-x-2 px-10 py-5">
+                <div className="flex text-black dark:text-white w-full backdrop-blur-2xl items-center gap-x-2 max-sm:px-5 px-10 py-5">
                     <button
                         type="button"
                         aria-label={open ? "Close menu" : "Open menu"}
@@ -76,7 +76,7 @@ export function Header() {
 
                 {/* Collapsible menu */}
                 {open && (
-                    <nav className="text-4xl pt-10 px-10 font-normal py-5 border-b border-white  flex flex-col font-space gap-y-5 gap-x-5 uppercase">
+                    <nav className="text-4xl text-black dark:text-white max-sm:px-5 pt-10 px-10 font-normal py-5 border-b border-white  flex flex-col font-space gap-y-5 gap-x-5 uppercase">
                         {linkList.map((link, index) => (
                             <div className="flex items-center underline" key={index}>
                                 <Link onClick={handleNavClick} href={link.link}>
@@ -85,7 +85,7 @@ export function Header() {
                                 <link.icon size={40} />
                             </div>
                         ))}
-                        <button className="flex bg-[#942D00] justify-center rounded-xs px-10 font-medium py-2 gap-x-5 uppercase">
+                        <button className="flex bg-[#942D00] text-white justify-center rounded-xs px-10 font-medium py-2 gap-x-5 uppercase">
                             Log in
                         </button>
                     </nav>
