@@ -28,7 +28,7 @@ export function Header() {
     ]
 
     return (
-        <header className="fixed backdrop-blur-2xl flex justify-center text-[#e1e1e1]  z-40 top-0 left-0 w-full">
+        <header className="fixed backdrop-blur-2xl flex justify-center dark:text-[#e1e1e1]  z-40 top-0 left-0 w-full">
 
             {/* Desktop nav */}
             <header className="w-full px-10 hidden lg:flex py-10 items-center justify-between max-w-400">
@@ -53,9 +53,9 @@ export function Header() {
                         Pricing
                     </Link>
                 </nav>
-                <button className="flex bg-[#942D00] rounded-xs px-10 font-medium py-2 text-xs gap-x-5 uppercase">
+                <Link href={"/signin"} className="flex bg-[#942D00] text-white rounded-xs px-10 font-medium py-2 text-xs gap-x-5 uppercase">
                     Log in
-                </button>
+                </Link>
             </header>
 
             {/* Mobile header */}

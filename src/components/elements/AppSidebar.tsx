@@ -95,17 +95,17 @@ const AppSidebar = ({userType}: AppSidebarProps) => {
                                 <SidebarMenuButton
                                     asChild
                                     className={cn(
-                                        "flex rounded-sm transition-all duration-300  items-center justify-start px-7 py-5",
+                                        "flex rounded transition-all duration-300  items-center justify-start px-7 py-5",
                                         isActive
-                                            ? "bg-yellow-300 "
-                                            : "text-gray-100 border-transparent hover:bg-primary-100",
-                                        open ? "text-black" : "ml-[5px]"
+                                            ? "dark:bg-[#942D00] bg-black"
+                                            : " border-transparent ",
+                                        open ? "" : "ml-[5px]"
                                     )}
                                 >
-                                    <Link href={link.href} className="w-full" scroll={false}>
+                                    <Link href={link.href} className={`w-full ${isActive ? "text-white font-medium" : ""}`} scroll={false}>
                                         <div className="flex items-center gap-3">
-                                            <link.icon className={`h-5 w-5  text-black ${isActive ? "text-black": ""}`}/>
-                                            <span className={`text-black ${isActive ? "text-black font-medium" : ""}`}>
+                                            <link.icon className={`h-5 w-5 ${isActive ? "font-medium" : ""}`}/>
+                                            <span className={` ${isActive ? "font-medium" : ""}`}>
                                                 {link.label}
                                             </span>
                                         </div>

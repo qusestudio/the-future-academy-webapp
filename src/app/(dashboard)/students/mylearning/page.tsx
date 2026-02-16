@@ -36,9 +36,9 @@ const StudentMyLearning = () => {
     return (
         <div className="relative max-w-300 w-full h-full py-5 gap-y-5 flex flex-col">
             <section className="flex max-sm:flex-col justify-between gap-y-5">
-                <h1 className="lg:text-3xl text-xl capitalize font-bold">
-                    Hey <span className="text-yellow-400 font-bold">{authUser?.userInfo?.name}</span>! <br/>
-                    <p className="text-black">
+                <h1 className="lg:text-3xl text-xl capitalize font-medium">
+                    Hey <span className=" font-space font-bold">{authUser?.userInfo?.name}</span>! <br/>
+                    <p className="">
                         What
                         are we doing today?
                     </p>

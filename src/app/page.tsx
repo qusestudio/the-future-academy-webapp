@@ -1,4 +1,3 @@
-import Link from "next/link";
 import {CircleArrowRight} from "lucide-react";
 import GlowingButton from "@/components/elements/GlowingButton";
 import {Header} from "@/components/elements/Header";
@@ -13,11 +12,11 @@ const Home = () => {
             <main className="max-w-400 px-10 max-sm:px-5 w-full">
                 <section className="w-full min-h-screen justify-between gap-y-10 pt-50 pb-20 items-center flex flex-col">
                     <div className="gap-y-10 py-10 justify-center items-center flex flex-col">
-                        <div className="bg-[#111] flex items-center gap-x-2 rounded-full text-sm pl-2 px-1.5 py-0.5">
-                            <p className="text-[13px] text-white">
+                        <div className="dark:bg-[#111] bg-[#afafaf]/30 flex items-center gap-x-2 rounded-full text-sm pl-2 px-1.5 py-0.5">
+                            <p className="text-[13px] font-[450] dark:text-white">
                                 New version is out! Read More
                             </p>
-                            <CircleArrowRight className="stroke-1 bg-[#942D00] rounded-full"/>
+                            <CircleArrowRight className="stroke-[2px] bg-[#942D00] text-[#dfdfdf] rounded-full"/>
                         </div>
                         <h1 className="sm:text-7xl text-5xl text-center font-normal">
                             Education Reimagined
@@ -32,9 +31,9 @@ const Home = () => {
                         </button>
                         <div className="text-xs w-full max-w-xl text-center gap-x-1 items-center flex h-5 leading-tight">
                             <span className="w-full">CAPS-Aligned Curriculum</span>
-                            <Separator className="bg-white" orientation={"vertical"} />
+                            <Separator className="dark:bg-white bg-black" orientation={"vertical"} />
                             <span className="w-full">Grade 10 - 12</span>
-                            <Separator className="bg-white" orientation={"vertical"} />
+                            <Separator className="dark:bg-white bg-black" orientation={"vertical"} />
                             <span className="w-full">University Readiness</span>
                         </div>
                     </div>
