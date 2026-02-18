@@ -1,6 +1,7 @@
 import React from 'react';
 import {Button} from "@/components/ui/button";
 import {Separator} from "@/components/ui/separator";
+import {LucideNewspaper, Plus} from "lucide-react";
 
 const BillingSettings = () => {
     return (
@@ -54,7 +55,22 @@ const BillingSettings = () => {
                             </section>
                         </div>
                     </div>
+                    <Button
+                        variant={"ghost"}
+                        className="text-xs text-muted-foreground hover:cursor-pointer self-start"
+                    >
+                        <Plus /> Add new payment method
+                    </Button>
                 </div>
+            </section>
+            <section className="flex flex-col gap-y-4">
+                <div className="flex gap-x-3 justify-between text-sm items-start p-3 rounded-md">
+                    <span className="font-medium">Latest Transactions</span>
+                    <button className="gap-x-3 border p-1.5 font-medium flex items-center hover:cursor-pointer rounded-sm text-[10px]">
+                       <LucideNewspaper size={15} /> Export CSV
+                    </button>
+                </div>
+            {/*   Table of Transactions */}
             </section>
         </main>
     );
