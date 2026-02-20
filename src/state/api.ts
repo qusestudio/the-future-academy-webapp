@@ -9,7 +9,7 @@ import {
     StudentEnrollment, StudentProfile,
     StudentUser,
     Subject,
-    Topic
+    Topic, YocoCheckoutRequest, YocoCheckoutResponse
 } from "@/types/models";
 import {toast} from "sonner";
 import {any} from "zod";
@@ -28,7 +28,7 @@ export const api = createApi({
         }
     }),
     reducerPath: "api",
-    tagTypes: ["Instructors", "StudentProfile","Students", "AvailableSubjects","Subjects", "NotEnrolled","topic", "Lessons", "LessonDetails", "Enrollments", "Enrollment", "SubjectDetails", "Topics", "TopicDetails"],
+    tagTypes: ["Instructors", "Payment", "StudentProfile","Students", "AvailableSubjects","Subjects", "NotEnrolled","topic", "Lessons", "LessonDetails", "Enrollments", "Enrollment", "SubjectDetails", "Topics", "TopicDetails"],
     endpoints: (build) => ({
         // Authentication
         getAuthUser: build.query<User, void>({
@@ -38,6 +38,7 @@ export const api = createApi({
                     const {idToken} = session.tokens ?? {};
                     const user = await getCurrentUser(); // Fetching info from cognito
                     const userRole = idToken?.payload["custom:role"] as string;
+                    const email = idToken?.payload["email"] as string;
 
                     const endpoint =
                         userRole === "instructor"
@@ -66,47 +67,9 @@ export const api = createApi({
                         data: {
                             cognitoInfo: {...user},
                             userInfo: userDetailsResponse.data as StudentUser | InstructorUser, // discrepancy
-                            userRole
-                        }
-                    }
-                } catch (error: any) {
-                    return {
-                        error: error.message || "Could not fetch user data"
-                    }
-                }
-            }
-        }),
-        getUserProfile: build.query<StudentProfile, Omit<StudentProfile, "id">>({
-            queryFn: async (profile, _queryApi, _extraoptions, fetchWithBQ) => {
-                try {
-                    const session = await fetchAuthSession();
-                    const {idToken} = session.tokens ?? {};
-                    const user = await getCurrentUser(); // Fetching info from cognito
-                    const userRole = idToken?.payload["custom:role"] as string;
-
-                    const endpoint =
-                        userRole === "instructor"
-                            ? `/instructor-profiles/${user.userId}`
-                            : `/student-profiles/${user.userId}`;
-
-                    // Check if the user exists in our server
-                    console.log("Checking If user exists in our server")
-                    let userDetailsResponse = await fetchWithBQ(endpoint);
-                    console.log(userDetailsResponse.data);
-                    console.log(userDetailsResponse.error);
-
-                    // If user profile doesn't exist, create new user profile
-                    if (userDetailsResponse.error && userDetailsResponse.error.status === 404) {
-                        console.log("Student Profile Not Found Error")
-                        userDetailsResponse = await createNewProfileInDatabase(
-                            profile,
                             userRole,
-                            fetchWithBQ
-                        );
-                    }
-
-                    return {
-                        data: userDetailsResponse.data as StudentProfile
+                            email
+                        }
                     }
                 } catch (error: any) {
                     return {
@@ -133,7 +96,6 @@ export const api = createApi({
                 });
             },
         }),
-
         getProfile: build.query<StudentProfile, string>({
             query: (studentId) => `/student-profiles/${studentId}`,
             // providesTags: (result, error, id) => [{type: "StudentProfile", id}],
@@ -144,7 +106,52 @@ export const api = createApi({
                 });
             },
         }),
+        getAuthProfile: build.query<StudentProfile, void>({
+            queryFn: async (_, _queryApi, _extraOptions, fetchWithBQ) => {
+                try {
+                    const user = await getCurrentUser();
 
+                    if (!user) {
+                        return { error: { status: 401, data: 'No authenticated user found' } };
+                    }
+
+                    const studentId = user.userId; // or whatever field contains the student ID
+
+                    const result = await fetchWithBQ(`/student-profiles/${studentId}`);
+
+                    if (result.error) {
+                        return { error: result.error };
+                    }
+
+                    return { data: result.data as StudentProfile };
+                } catch (error: any) {
+                    return {
+                        error: error.message || "Could not fetch student profile"
+                    }
+                }
+            },
+            providesTags: ["StudentProfile"],
+        }),
+
+        // Payments
+        createCheckout: build.mutation<YocoCheckoutResponse, YocoCheckoutRequest>({
+            query: (checkout) => {
+                alert("making payment")
+                return {
+                    url: "/payments",
+                    method: "POST",
+                    body: checkout
+                }
+            },
+            invalidatesTags: ["Payment"],
+            async onQueryStarted(_, {queryFulfilled}) {
+                toast.promise(queryFulfilled, {
+                    loading: "Initiating payment...",
+                    success: "You are being redirected to complete payment!",
+                    error: "Could not initiate payment.",
+                });
+            },
+        }),
 
         // Enrollment endpoints
         getNonEnrollments: build.query<NotEnrolled[], {studentId: string, grade: number}>({
@@ -454,8 +461,9 @@ export const {
     useCreateEnrollmentMutation,
     useCreateProfileMutation,
     useGetProfileQuery,
+    useGetAuthProfileQuery,
+    useCreateCheckoutMutation,
     useCreateSubjectMutation,
-    useGetUserProfileQuery,
     useCreateLessonMutation
 } = api;
 

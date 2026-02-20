@@ -43,7 +43,7 @@ const AppSidebar = ({userType}: AppSidebarProps) => {
         : [
             {icon: Library, label: "My learning", href: "/students/mylearning"},
             {icon: CircuitBoard, label: "Enrollments", href: "/students/enrollments"},
-            {icon: Settings, label: "Settings", href: "/students/settings"},
+            {icon: Settings, label: "Settings", href: "/students/settings/profile"},
         ];
 
     return (
@@ -86,7 +86,7 @@ const AppSidebar = ({userType}: AppSidebarProps) => {
                     </SidebarMenuItem>
                 </SidebarMenu>
             </SidebarHeader>
-            <SidebarContent className={` flex flex-col font-medium  justify-between pb-5 ${open? "px-4" : "" }`}>
+            <SidebarContent className={`flex flex-col text-xs  justify-between pb-5 ${open? "px-4" : "" }`}>
                 <SidebarMenu className="space-y-1">
                     {navLinks.map((link) => {
                         const isActive = pathname === link.href || pathname.includes("/instructors/"+link.href);
@@ -102,10 +102,10 @@ const AppSidebar = ({userType}: AppSidebarProps) => {
                                         open ? "" : "ml-[5px]"
                                     )}
                                 >
-                                    <Link href={link.href} className={`w-full ${isActive ? "text-white font-medium" : ""}`} scroll={false}>
+                                    <Link href={link.href} className={`w-full ${isActive ? "text-white" : ""}`} scroll={false}>
                                         <div className="flex items-center gap-3">
-                                            <link.icon className={`h-5 w-5 ${isActive ? "font-medium" : ""}`}/>
-                                            <span className={` ${isActive ? "font-medium" : ""}`}>
+                                            <link.icon className={`h-5 w-5 ${isActive ? "" : ""}`}/>
+                                            <span className={`${isActive ? "text-sm" : ""}`}>
                                                 {link.label}
                                             </span>
                                         </div>
@@ -116,56 +116,56 @@ const AppSidebar = ({userType}: AppSidebarProps) => {
                     })}
                 </SidebarMenu>
 
-                {
-                    authUser && (
-                        <DropdownMenu modal={false}>
-                            <DropdownMenuTrigger className="flex px-1 bg-primary-100 py-1 rounded-full items-center gap-2 focus:outline-none">
-                                <Avatar>
-                                    <AvatarImage src={authUser.userInfo?.image}/>
-                                    <AvatarFallback className="bg-primary-600 text-white">
-                                        { authUser.userInfo?.name[0].toUpperCase() || authUser.userRole?.[0].toUpperCase()}
-                                    </AvatarFallback>
-                                </Avatar>
-                                <p className="text-black capitalize text-sm">
-                                    {authUser.userInfo?.name || "Profile"}
-                                </p>
-                            </DropdownMenuTrigger>
-                            <DropdownMenuContent className="bg-white text-primary-700">
-                                <DropdownMenuItem
-                                    className="cursor-pointer hover:bg-primary-700 hover:text-primary-100 font-bold"
-                                    onClick={() => {
-                                        router.push(
-                                            authUser.userRole?.toLowerCase() === "instructor"
-                                                ? "/instructors/subjects"
-                                                : "/students/mylearning",
-                                            { scroll: false }
-                                        )
-                                    }}
-                                >
-                                    Go to Dashboard
-                                </DropdownMenuItem>
-                                <DropdownMenuSeparator className="bg-primary-200" />
-                                <DropdownMenuItem
-                                    className="cursor-pointer hover:bg-primary-700 hover:text-primary-100"
-                                    onClick={() => {
-                                        router.push(`${authUser.userRole?.toLowerCase()}s/settings`,
-                                            {scroll:false}
-                                        )
-                                    }}
-                                >
-                                    Settings
-                                </DropdownMenuItem>
-                                <DropdownMenuSeparator className="bg-primary-200" />
-                                <DropdownMenuItem
-                                    className="cursor-pointer hover:bg-primary-700 hover:text-primary-100"
-                                    onClick={handleSignOut}
-                                >
-                                    Sign out
-                                </DropdownMenuItem>
-                            </DropdownMenuContent>
-                        </DropdownMenu>
-                    )
-                }
+                {/*{*/}
+                {/*    authUser && (*/}
+                {/*        <DropdownMenu modal={false}>*/}
+                {/*            <DropdownMenuTrigger className="flex px-1 bg-primary-100 py-1 rounded-full items-center gap-2 focus:outline-none">*/}
+                {/*                <Avatar>*/}
+                {/*                    <AvatarImage src={authUser.userInfo?.image}/>*/}
+                {/*                    <AvatarFallback className="bg-primary-600 text-white">*/}
+                {/*                        { authUser.userInfo?.name[0].toUpperCase() || authUser.userRole?.[0].toUpperCase()}*/}
+                {/*                    </AvatarFallback>*/}
+                {/*                </Avatar>*/}
+                {/*                <p className="text-black capitalize text-sm">*/}
+                {/*                    {authUser.userInfo?.name || "Profile"}*/}
+                {/*                </p>*/}
+                {/*            </DropdownMenuTrigger>*/}
+                {/*            <DropdownMenuContent className="bg-white text-primary-700">*/}
+                {/*                <DropdownMenuItem*/}
+                {/*                    className="cursor-pointer hover:bg-primary-700 hover:text-primary-100 font-bold"*/}
+                {/*                    onClick={() => {*/}
+                {/*                        router.push(*/}
+                {/*                            authUser.userRole?.toLowerCase() === "instructor"*/}
+                {/*                                ? "/instructors/subjects"*/}
+                {/*                                : "/students/mylearning",*/}
+                {/*                            { scroll: false }*/}
+                {/*                        )*/}
+                {/*                    }}*/}
+                {/*                >*/}
+                {/*                    Go to Dashboard*/}
+                {/*                </DropdownMenuItem>*/}
+                {/*                <DropdownMenuSeparator className="bg-primary-200" />*/}
+                {/*                <DropdownMenuItem*/}
+                {/*                    className="cursor-pointer hover:bg-primary-700 hover:text-primary-100"*/}
+                {/*                    onClick={() => {*/}
+                {/*                        router.push(`${authUser.userRole?.toLowerCase()}s/settings`,*/}
+                {/*                            {scroll:false}*/}
+                {/*                        )*/}
+                {/*                    }}*/}
+                {/*                >*/}
+                {/*                    Settings*/}
+                {/*                </DropdownMenuItem>*/}
+                {/*                <DropdownMenuSeparator className="bg-primary-200" />*/}
+                {/*                <DropdownMenuItem*/}
+                {/*                    className="cursor-pointer hover:bg-primary-700 hover:text-primary-100"*/}
+                {/*                    onClick={handleSignOut}*/}
+                {/*                >*/}
+                {/*                    Sign out*/}
+                {/*                </DropdownMenuItem>*/}
+                {/*            </DropdownMenuContent>*/}
+                {/*        </DropdownMenu>*/}
+                {/*    )*/}
+                {/*}*/}
             </SidebarContent>
         </Sidebar>
     )

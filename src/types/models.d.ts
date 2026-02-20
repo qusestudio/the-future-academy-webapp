@@ -75,11 +75,63 @@ interface Lesson {
     description: string
 }
 
+interface YocoCheckoutRequest {
+    amount: number;
+    currency: string;
+    cancelUrl?: string;
+    successUrl?: string;
+    failureUrl?: string;
+    metadata?: Record<string, string>;
+    totalDiscount?: number;
+    totalTaxAmount?: number;
+    subtotalAmount?: number;
+    lineItems?: LineItem[];
+    externalId?: string;
+}
+
+interface LineItem {
+    displayName: string;
+    quantity: number;
+    pricingDetails: PricingDetails;
+    description?: string;
+}
+
+interface YocoCheckoutResponse {
+    id: string;
+    redirectUrl: string;
+    status: string;
+    amount: number;
+    currency: string;
+    paymentId?: string;
+    successUrl?: string;
+    cancelUrl?: string;
+    failureUrl?: string;
+    metadata?: Record<string, string>;
+    merchantId: string;
+    totalDiscount?: number;
+    totalTaxAmount?: number;
+    subtotalAmount?: number;
+    lineItems?: LineItem[];
+    externalId?: string;
+    processingMode: string;
+    clientReferenceId?: string;
+}
+
+
+interface PricingDetails {
+    price: number;
+    taxAmount?: number;
+    discountAmount?: number;
+}
+
 export const {
     StudentUser,
     StudentAccount,
     InstructorUser,
     InstructorAccount,
     Enrollment,
-    Topic
+    Topic,
+    YocoCheckoutRequest,
+    PricingDetails,
+    YocoCheckoutResponse
 }

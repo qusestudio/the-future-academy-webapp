@@ -10,7 +10,7 @@ import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover";
 import {Button} from "@/components/ui/button";
 import {Calendar} from "@/components/ui/calendar";
 import {StudentProfile} from "@/types/models";
-import {useCreateProfileMutation, useGetAuthUserQuery, useGetUserProfileQuery} from "@/state/api";
+import {useCreateProfileMutation, useGetAuthUserQuery} from "@/state/api";
 
 
 const OnboardingPage = () => {
