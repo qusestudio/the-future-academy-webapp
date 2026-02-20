@@ -136,7 +136,6 @@ export const api = createApi({
         // Payments
         createCheckout: build.mutation<YocoCheckoutResponse, YocoCheckoutRequest>({
             query: (checkout) => {
-                alert("making payment")
                 return {
                     url: "/payments",
                     method: "POST",

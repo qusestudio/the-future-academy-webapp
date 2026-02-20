@@ -3,10 +3,10 @@
 import React from 'react';
 import {Button} from "@/components/ui/button";
 import {Separator} from "@/components/ui/separator";
-import {LucideNewspaper, Plus, TriangleAlert} from "lucide-react";
+import {LucideNewspaper, TriangleAlert} from "lucide-react";
 import Image from "next/image";
 import {useCreateCheckoutMutation} from "@/state/api";
-import {redirect, usePathname} from "next/navigation";
+import {redirect} from "next/navigation";
 
 const BillingSettings = () => {
     const [createCheckout] = useCreateCheckoutMutation();
@@ -14,11 +14,12 @@ const BillingSettings = () => {
 
     // some state to check if the current month is pay.
     const handlePay = async () => {
+
         const result = await createCheckout(
             {
                 amount: 300,
                 currency: "ZAR",
-                successUrl: 'http://localhost:3000/students/settings/billing',
+                successUrl: process.env.NEXT_PUBLIC_BILLING_REDIRECT_URL!,
             }
         );
         console.log(result.data);
