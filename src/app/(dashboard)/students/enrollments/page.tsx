@@ -2,7 +2,7 @@
 
 import React from 'react'
 import {
-    useCreateEnrollmentMutation,
+    useCreateEnrollmentMutation, useGetAuthProfileQuery,
     useGetAuthUserQuery,
     useGetNonEnrollmentsQuery,
     useGetProfileQuery
@@ -12,12 +12,8 @@ import {formatGrade} from "@/lib/utils";
 
 const StudentEnrollments = () => {
 
-    const {data: authUser, isLoading: authLoading} = useGetAuthUserQuery();
-    const {data: profile, isLoading: profileLoading} = useGetProfileQuery(
-        authUser?.cognitoInfo.userId || "",
-        {skip: !authUser?.cognitoInfo.userId}
-    );
-    const {data: subjects, isLoading} = useGetNonEnrollmentsQuery( {studentId: authUser!.cognitoInfo.userId, grade: profile!.grade! }, {skip: !authUser});
+    const {data: profile, isLoading: profileLoading} = useGetAuthProfileQuery();
+    const {data: subjects, isLoading} = useGetNonEnrollmentsQuery( {studentId: profile!.studentId, grade: profile!.grade! }, {skip: !profile});
     const [createEnrollment] = useCreateEnrollmentMutation();
 
     const grade: number = 10;
@@ -36,7 +32,7 @@ const StudentEnrollments = () => {
             break;
     }
 
-    if (isLoading || authLoading) {
+    if (profileLoading || isLoading) {
         return (
             <div className="w-full items-center justify-center h-full gap-y-5 flex flex-col">
                 <p className="text-lg font-medium">Loading...</p>
@@ -67,7 +63,7 @@ const StudentEnrollments = () => {
                         <EnrollmentListItem key={index}
                                             onEnroll={()=>{
                                                 handleEnroll({ subjectId: subject.subjectId,
-                            studentId: authUser!.cognitoInfo!.userId
+                            studentId: profile!.studentId
                         }).then()}}
                                             subject={subject} />
                     ))
