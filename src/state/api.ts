@@ -1,18 +1,17 @@
 import {createApi, fetchBaseQuery} from "@reduxjs/toolkit/query/react";
 import {fetchAuthSession, getCurrentUser} from "aws-amplify/auth"
-import {createNewProfileInDatabase, createNewUserInDatabase, withToast} from "@/lib/utils";
+import {createNewUserInDatabase, withToast} from "@/lib/utils";
 import {
     Enrollment,
     InstructorUser,
     Lesson,
-    NotEnrolled,
+    NotEnrolled, StudentCheckout,
     StudentEnrollment, StudentProfile,
     StudentUser,
     Subject,
     Topic, YocoCheckoutRequest, YocoCheckoutResponse
 } from "@/types/models";
 import {toast} from "sonner";
-import {any} from "zod";
 
 export const api = createApi({
     baseQuery: fetchBaseQuery({
@@ -28,7 +27,7 @@ export const api = createApi({
         }
     }),
     reducerPath: "api",
-    tagTypes: ["Instructors", "Payment", "StudentProfile","Students", "AvailableSubjects","Subjects", "NotEnrolled","topic", "Lessons", "LessonDetails", "Enrollments", "Enrollment", "SubjectDetails", "Topics", "TopicDetails"],
+    tagTypes: ["Instructors", "Payment", "StudentCheckout","StudentProfile","Students", "AvailableSubjects","Subjects", "NotEnrolled","topic", "Lessons", "LessonDetails", "Enrollments", "Enrollment", "SubjectDetails", "Topics", "TopicDetails"],
     endpoints: (build) => ({
         // Authentication
         getAuthUser: build.query<User, void>({
@@ -142,7 +141,7 @@ export const api = createApi({
                     body: checkout
                 }
             },
-            invalidatesTags: ["Payment"],
+            invalidatesTags: ["Payment", "StudentCheckout"],
             async onQueryStarted(_, {queryFulfilled}) {
                 toast.promise(queryFulfilled, {
                     loading: "Initiating payment...",
@@ -150,6 +149,32 @@ export const api = createApi({
                     error: "Could not initiate payment.",
                 });
             },
+        }),
+        getStudentCheckout: build.query<StudentCheckout, void>({
+            queryFn: async (_, _queryApi, _extraOptions, fetchWithBQ) => {
+                try {
+                    const user = await getCurrentUser();
+
+                    if (!user) {
+                        return { error: { status: 401, data: 'No authenticated user found' } };
+                    }
+
+                    const studentId = user.userId;
+
+                    const result = await fetchWithBQ(`/students/${studentId}/checkout`);
+
+                    if (result.error) {
+                        return { error: result.error };
+                    }
+
+                    return { data: result.data as StudentCheckout };
+                } catch (error: any) {
+                    return {
+                        error: error.message || "Could not fetch student checkout"
+                    }
+                }
+            },
+            providesTags: ["StudentCheckout"],
         }),
 
         // Enrollment endpoints
@@ -462,6 +487,7 @@ export const {
     useGetProfileQuery,
     useGetAuthProfileQuery,
     useCreateCheckoutMutation,
+    useGetStudentCheckoutQuery,
     useCreateSubjectMutation,
     useCreateLessonMutation
 } = api;

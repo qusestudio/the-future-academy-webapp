@@ -3,18 +3,19 @@
 import React from 'react';
 import {Button} from "@/components/ui/button";
 import {Separator} from "@/components/ui/separator";
-import {LucideNewspaper, TriangleAlert} from "lucide-react";
+import {CheckCircle2, LucideNewspaper, TriangleAlert} from "lucide-react";
 import Image from "next/image";
-import {useCreateCheckoutMutation} from "@/state/api";
+import {useCreateCheckoutMutation, useGetStudentCheckoutQuery} from "@/state/api";
 import {redirect} from "next/navigation";
+import ProfilePageSkeleton from "@/components/skeletons/skeletons";
 
 const BillingSettings = () => {
     const [createCheckout] = useCreateCheckoutMutation();
+    const {data: checkout, isLoading} = useGetStudentCheckoutQuery();
     // fetch
 
-    // some state to check if the current month is pay.
-    const handlePay = async () => {
 
+    const handlePay = async () => {
         const result = await createCheckout(
             {
                 amount: 300,
@@ -26,12 +27,22 @@ const BillingSettings = () => {
         redirect(`${result.data!.redirectUrl}`);
     }
 
+    const isNoCheckout = !checkout || checkout?.status !== "Completed";
+
+
+    if (isLoading) {
+        return (
+            <ProfilePageSkeleton />
+        )
+    }
+
     return (
         <main className="w-full py-5 flex-col flex gap-y-5">
             <p className="font-medium">
                 Billing & Payments
             </p>
-            <div className="flex w-full dark:bg-yellow-500/10 bg-yellow-500/50 p-5 rounded-xl border items-center justify-between">
+            <div
+                className={` ${isNoCheckout ? "dark:bg-yellow-500/10 bg-yellow-500/40" : "dark:bg-green-500/10 bg-green-500/40"} flex w-full  p-5 rounded-xl border items-center justify-between`}>
                 <p className="text-lg flex items-center gap-x-3 font-medium">
                     <Image
                         width={50}
@@ -43,21 +54,33 @@ const BillingSettings = () => {
                     Pay with YOCO
                 </p>
                 <p className="flex flex-wrap max-w-50 text-center justify-center text-sm">
-                    Your payment is due
+                    {
+                        isNoCheckout ?
+                            "Your payment is due"
+                            :
+                            "Thank you!"
+                    }
                 </p>
                 <Button
                     variant={"outline"}
+                    disabled={!isNoCheckout}
                     className="shadow-none text-xs hover:cursor-pointer"
                     onClick={handlePay}
                 >
-                    Pay with Card
+                    {
+                        isNoCheckout ? "Pay with Card" : "Paid"
+                    }
                 </Button>
             </div>
             <p className="text-xs flex  items-center gap-x-3">
-                <TriangleAlert className="text-yellow-500/50" />
-                Your payment is due to keep things running smoothly. A quick update now helps us stay on track together. Please complete your payment at your earliest convenience.
+                {isNoCheckout && <> <TriangleAlert className="text-yellow-500/50"/>
+                    Your payment is due to keep things running smoothly. A quick update now helps us stay on track
+                    together.
+                    Please complete your payment at your earliest convenience. </>}
+                {!isNoCheckout && <> <CheckCircle2 className="text-green-500/50"/>
+                    The current month is paid </>}
             </p>
-            <Separator />
+            <Separator/>
             {/*<section className="flex justify-between">*/}
             {/*    <p className="text-xs">Your next payment of <span className="font-medium">R 300.00</span>, to be charged on the <span className="font-medium">31 of March, 2026</span></p>*/}
             {/*</section>*/}
@@ -104,11 +127,12 @@ const BillingSettings = () => {
             <section className="flex flex-col gap-y-4">
                 <div className="flex gap-x-3 justify-between text-sm items-start p-3 rounded-md">
                     <span className="font-medium">Latest Transactions</span>
-                    <button className="gap-x-3 border p-1.5 font-medium flex items-center hover:cursor-pointer rounded-sm text-[10px]">
-                       <LucideNewspaper size={15} /> Export CSV
+                    <button
+                        className="gap-x-3 border p-1.5 font-medium flex items-center hover:cursor-pointer rounded-sm text-[10px]">
+                        <LucideNewspaper size={15}/> Export CSV
                     </button>
                 </div>
-            {/*   Table of Transactions */}
+                {/*   Table of Transactions */}
             </section>
         </main>
     );

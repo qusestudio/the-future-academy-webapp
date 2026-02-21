@@ -124,6 +124,17 @@ interface PricingDetails {
     discountAmount?: number;
 }
 
+interface StudentCheckout {
+    id: string,
+    studentId: string,
+    amount: number,
+    status: string,
+    month: number,
+    year: number,
+    createdAt: Date,
+    updatedAt: Date,
+}
+
 export const {
     StudentUser,
     StudentAccount,
@@ -133,5 +144,6 @@ export const {
     Topic,
     YocoCheckoutRequest,
     PricingDetails,
-    YocoCheckoutResponse
+    YocoCheckoutResponse,
+    StudentCheckout
 }
