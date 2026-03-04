@@ -3,7 +3,7 @@
 import {Amplify} from "aws-amplify";
 import {Authenticator, Heading, Radio, RadioGroupField, useAuthenticator, View} from "@aws-amplify/ui-react";
 import {usePathname, useRouter} from "next/navigation";
-import {useEffect} from "react";
+import React, {useEffect} from "react";
 import {useGetAuthUserQuery} from "@/state/api";
 
 Amplify.configure({
@@ -152,7 +152,7 @@ const Auth = ({children}:{children: React.ReactNode}) =>  {
     useEffect(() => {
             if (user && isAuthPage) {
                 router.push(
-                    '/',
+                    '/home',
                 );
             }
 

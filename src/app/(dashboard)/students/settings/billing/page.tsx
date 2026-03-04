@@ -37,12 +37,12 @@ const BillingSettings = () => {
     }
 
     return (
-        <main className="w-full p-4 bg-sidebar rounded-sm flex-col flex gap-y-5">
+        <main className="w-full p-4 border rounded-sm flex-col flex gap-y-5">
             <p className="font-medium">
                 Billing & Payments
             </p>
             <div
-                className={` ${isNoCheckout ? "dark:bg-yellow-500/10 bg-yellow-500/40" : "dark:bg-green-500/10 bg-green-500/40"} flex w-full  p-5 rounded-xl border items-center justify-between`}>
+                className={` ${isNoCheckout ? "dark:bg-yellow-500/30 bg-red-700/30" : "dark:bg-green-500/10 bg-green-500/40"} flex w-full  p-5 rounded-md border items-center justify-between`}>
                 <p className="text-lg flex items-center gap-x-3 font-medium">
                     <Image
                         width={50}
@@ -73,7 +73,7 @@ const BillingSettings = () => {
                 </Button>
             </div>
             <p className="text-xs flex  items-center gap-x-3">
-                {isNoCheckout && <> <TriangleAlert className="text-yellow-500/50"/>
+                {isNoCheckout && <> <TriangleAlert className="text-yellow-500"/>
                     Your payment is due to keep things running smoothly. A quick update now helps us stay on track
                     together.
                     Please complete your payment at your earliest convenience. </>}

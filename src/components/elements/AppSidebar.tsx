@@ -91,11 +91,11 @@ const AppSidebar = ({userType}: AppSidebarProps) => {
                                 <SidebarMenuButton
                                     asChild
                                     className={cn(
-                                        "flex rounded-l-none font-semibold rounded-r uppercase hover:bg-[#22282A] hover:text-[#C7D8CD] transition-all ease-out text-xs  duration-100 items-center justify-start px-4 py-5",
+                                        "flex rounded-l-none font-semibold rounded-r uppercase hover:bg-sidebar-accent/20 transition-all ease-out text-xs  duration-100 items-center justify-start px-4 py-5",
                                         isActive
                                             ? "dark:bg-transparent from-[#1A1D23] to-[#15181D]\n" +
-                                            "dark:text-[#9FB8A5]\n" +
-                                            "border-l-3 border-[#4F6357] bg-[#eee]"
+                                            "dark:text-sidebar-accent-foreground\n" +
+                                            "border-l-3 border-sidebar-accent bg-[#eee]"
                                             : " border-transparent",
                                         open ? "" : "ml-1.25"
                                     )}

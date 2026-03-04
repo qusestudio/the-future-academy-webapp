@@ -32,7 +32,7 @@ const ProfileSettings = () => {
     }
 
     return (
-        <main className="w-full p-4 flex-col bg-sidebar rounded-sm flex gap-y-5">
+        <main className="w-full p-4 flex-col border rounded-sm flex gap-y-5">
             <p className="font-medium">
                 My Profile
             </p>
@@ -40,13 +40,13 @@ const ProfileSettings = () => {
                 <div className="flex gap-x-3 items-center">
                     <Avatar>
                         <AvatarImage src={authUser?.userInfo?.image}/>
-                        <AvatarFallback className="bg-primary-600 text-white">
+                        <AvatarFallback className="bg-sidebar-accent-foreground/50 text-sidebar-accent-foreground  font-medium">
                             {authUser?.userInfo?.name[0].toUpperCase() || authUser?.userRole?.[0].toUpperCase()}
                         </AvatarFallback>
                     </Avatar>
                     <p className="text-sm flex flex-col font-medium">
                         {profile?.firstName} {profile?.lastName}
-                        <span className="text-muted-foreground text-xs">{authUser?.userInfo.email}</span>
+                        <span className="text-xs">{authUser?.userInfo.email}</span>
                     </p>
                 </div>
                 <Button
@@ -76,21 +76,21 @@ const ProfileSettings = () => {
                         </div>
                         <div className="flex flex-col gap-y-8">
                             <div className="grid font-medium grid-cols-2 gap-x-3 items-start  rounded-md">
-                                <div className="text-xs flex flex-col gap-y-3 text-muted-foreground rounded">
+                                <div className="text-xs flex flex-col gap-y-3  rounded">
                                     First Name
                                     <span className="font-medium text-sm">{profile?.firstName}</span>
                                 </div>
-                                <div className="text-xs flex flex-col gap-y-3 text-muted-foreground rounded">
+                                <div className="text-xs flex flex-col gap-y-3  rounded">
                                     Last Name
                                     <span className="font-medium text-sm">{profile?.lastName}</span>
                                 </div>
                             </div>
                             <div className="grid font-medium grid-cols-2 gap-x-3 items-start rounded-md">
-                                <div className="text-xs flex flex-col gap-y-3 text-muted-foreground rounded">
+                                <div className="text-xs flex flex-col gap-y-3  rounded">
                                     Email Address
                                     <span className="font-medium text-sm">{authUser?.userInfo.email}</span>
                                 </div>
-                                <div className="text-xs flex flex-col gap-y-3 text-muted-foreground rounded">
+                                <div className="text-xs flex flex-col gap-y-3  rounded">
                                     Phone Number
                                     <span
                                         className="font-medium text-xs">{authUser?.userInfo.phoneNumber || "XXX-XXX-XXXX"}</span>
@@ -107,7 +107,7 @@ const ProfileSettings = () => {
                 </div>
                 <div className="flex flex-col gap-y-8">
                     <div className="grid font-medium  gap-x-3 items-start  rounded-md">
-                        <div className="text-sm flex items-center gap-x-10 gap-y-3 text-muted-foreground rounded">
+                        <div className="text-sm flex items-center gap-x-10 gap-y-3 rounded">
                             Theme
                             <ThemeToggle />
                         </div>

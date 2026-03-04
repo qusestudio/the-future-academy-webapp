@@ -5,6 +5,8 @@ import {Enrollment, Lesson, NotEnrolled, Subject, Topic} from "@/types/models";
 import {Button} from "@/components/ui/button";
 import {Dot, LayoutDashboardIcon, PlayIcon} from "lucide-react";
 import {useGetEnrollmentQuery} from "@/state/api";
+import {BoardMathIcon, CellsIcon, Prism01Icon, TestTube01Icon, ThreeDViewIcon} from "@hugeicons/core-free-icons";
+import {HugeiconsIcon} from "@hugeicons/react";
 
 function SubjectListItem({subject, onView}: { subject: Subject, onView?: () => void }) {
     return (
@@ -60,19 +62,38 @@ function LessonListItem({lesson, onView}: { lesson: Lesson, onView?: () => void 
 
 function EnrollmentListItem({subject, onEnroll}: { subject: NotEnrolled; onEnroll?: () => void }) {
 
+    let icon;
+    switch (subject.subjectTitle.toLowerCase()) {
+        case "mathematics":
+            icon = BoardMathIcon;
+            break;
+        case "physics":
+            icon = Prism01Icon;
+            break;
+        case "chemistry":
+            icon = TestTube01Icon;
+            break;
+        case "life sciences":
+            icon = CellsIcon;
+            break;
+        default:
+            icon = ThreeDViewIcon;
+            break;
+    }
+
     return (
         <div
             className="w-full items-end hover:cursor-pointer hover:shadow-lg transition-all duration-300 flex gap-x-5 justify-between border-2 p-4 rounded-md">
             <div className="flex gap-x-5 items-center">
-                <LayoutDashboardIcon/>
-                <p className="flex font-medium flex-col">
+                <HugeiconsIcon icon={icon} />
+                <p className="flex font-normal flex-col">
                     <span>{subject.subjectTitle}</span>
                     <span className="text-xs">Grade {subject.grade}</span>
                 </p>
             </div>
             <Button
                 onClick={onEnroll}
-                className="text-xs font-semibold self-end hover:cursor-pointer bg-secondary-450 hover:bg-secondary-600 rounded text-black"
+                className="text-xs font-medium self-end hover:cursor-pointer bg-sidebar-accent-foreground hover:bg-secondary-600 rounded-xs text-black"
             >
                 Enroll
             </Button>
