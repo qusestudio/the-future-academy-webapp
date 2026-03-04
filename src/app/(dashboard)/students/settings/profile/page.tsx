@@ -32,7 +32,7 @@ const ProfileSettings = () => {
     }
 
     return (
-        <main className="w-full py-5 flex-col flex gap-y-5">
+        <main className="w-full p-4 flex-col bg-sidebar rounded-sm flex gap-y-5">
             <p className="font-medium">
                 My Profile
             </p>
@@ -75,7 +75,7 @@ const ProfileSettings = () => {
                             <p className="text-sm font-medium">Personal Information</p>
                         </div>
                         <div className="flex flex-col gap-y-8">
-                            <div className="grid font-medium grid-cols-[30%_70%] gap-x-3 items-start  rounded-md">
+                            <div className="grid font-medium grid-cols-2 gap-x-3 items-start  rounded-md">
                                 <div className="text-xs flex flex-col gap-y-3 text-muted-foreground rounded">
                                     First Name
                                     <span className="font-medium text-sm">{profile?.firstName}</span>
@@ -85,7 +85,7 @@ const ProfileSettings = () => {
                                     <span className="font-medium text-sm">{profile?.lastName}</span>
                                 </div>
                             </div>
-                            <div className="grid font-medium grid-cols-[30%_70%] gap-x-3 items-start rounded-md">
+                            <div className="grid font-medium grid-cols-2 gap-x-3 items-start rounded-md">
                                 <div className="text-xs flex flex-col gap-y-3 text-muted-foreground rounded">
                                     Email Address
                                     <span className="font-medium text-sm">{authUser?.userInfo.email}</span>

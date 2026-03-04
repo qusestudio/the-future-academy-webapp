@@ -3,7 +3,12 @@
 import React from 'react'
 import MyLearningListItem from "@/components/elements/MyLearningListItem";
 import {Separator} from "@/components/ui/separator";
-import {useGetAuthUserQuery, useGetProfileQuery, useGetStudentEnrollmentsQuery} from "@/state/api";
+import {
+    useGetAuthProfileQuery,
+    useGetAuthUserQuery,
+    useGetProfileQuery,
+    useGetStudentEnrollmentsQuery
+} from "@/state/api";
 import {usePathname, useRouter} from "next/navigation";
 import {formatGrade} from "@/lib/utils";
 import Link from "next/link";
@@ -15,10 +20,8 @@ const StudentMyLearning = () => {
         authUser!.cognitoInfo.userId!,
         {skip: !authUser?.cognitoInfo.userId}
     );
-    const {data: profile, isLoading: profileLoading} = useGetProfileQuery(
-        authUser?.cognitoInfo.userId || "",
-        {skip: !authUser?.cognitoInfo.userId}
-    );
+
+    const {data: profile, isLoading: profileLoading} = useGetAuthProfileQuery();
 
 
     const pathname = usePathname();
@@ -34,10 +37,10 @@ const StudentMyLearning = () => {
     }
 
     return (
-        <div className="relative max-w-300 w-full h-full py-5 gap-y-5 flex flex-col">
+        <div className="relative max-w-300 w-full h-full py-10 gap-y-5 flex flex-col">
             <section className="flex max-sm:flex-col justify-between gap-y-5">
-                <h1 className="lg:text-3xl text-xl capitalize font-medium">
-                    Hey <span className=" font-space font-bold">{authUser?.userInfo?.name}</span>! <br/>
+                <h1 className="text-xl   ">
+                    Hey {profile?.firstName}!<br/>
                     <p className="">
                         What
                         are we doing today?

@@ -46,7 +46,7 @@ const Home = () => {
                 </section>
             </main>
             <section
-                className="w-full bg-linear-150 max-sm:h-screen from-[#9E9E9E] via-[#9E9E9E] to-[#942D00] justify-between items-center gap-y-5 py-15  flex flex-col">
+                className="w-full bg-linear-150 max-sm:h-screen from-[#9E9E9E] via-[#9E9E9E] to-[#4F6357] justify-between items-center gap-y-5 py-15  flex flex-col">
                 <div className="px-10 max-sm:px-5 max-w-400 w-full">
                     <p className="gap-y-10 font-space text-7xl text-black py-10  w-full  flex flex-col">
                         We invest in the potential of our students.

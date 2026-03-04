@@ -4,7 +4,7 @@ import {Amplify} from "aws-amplify";
 import {Authenticator, Heading, Radio, RadioGroupField, useAuthenticator, View} from "@aws-amplify/ui-react";
 import {usePathname, useRouter} from "next/navigation";
 import {useEffect} from "react";
-import {useGetAuthUserQuery, useGetProfileQuery} from "@/state/api";
+import {useGetAuthUserQuery} from "@/state/api";
 
 Amplify.configure({
     Auth: {
@@ -64,13 +64,13 @@ const components = {
                         <Authenticator.SignUp.FormFields/>
                         <RadioGroupField
                             name="custom:role"
-                            legend={"Role"}
+                            legend={""}
+                            defaultValue={"student"}
                             errorMessage={validationErrors?.["custom:role"]}
                             hasError={!!validationErrors?.["custom:role"]}
                             className=""
                         >
-                            <div className="flex flex-col text-sm items-start">
-                                <Radio value="instructor" className="flex gap-x-2 flex-row-reverse">Instructor</Radio>
+                            <div className="hidden text-sm items-start">
                                 <Radio value="student" className="flex gap-x-2 flex-row-reverse">Student</Radio>
                             </div>
                         </RadioGroupField>
@@ -139,6 +139,7 @@ const formFields = {
 
 const Auth = ({children}:{children: React.ReactNode}) =>  {
     const { user } = useAuthenticator((context) => [context.user]);
+    const { data: authUser, isLoading } = useGetAuthUserQuery();
     const router = useRouter();
     const pathname = usePathname();
 
@@ -149,11 +150,13 @@ const Auth = ({children}:{children: React.ReactNode}) =>  {
 
     //Redirect authenticated users away from auth pages
     useEffect(() => {
+            if (user && isAuthPage) {
+                router.push(
+                    '/',
+                );
+            }
 
-        if (user && isAuthPage) {
-            router.push("/");
-        }
-    }, [user, isAuthPage, router, isOnboardingPage]);
+    }, [user, isAuthPage, router, isOnboardingPage, isLoading, authUser]);
 
     // Allow access to public pages without authentication
     if (!isAuthPage && !isDashboardPage) {

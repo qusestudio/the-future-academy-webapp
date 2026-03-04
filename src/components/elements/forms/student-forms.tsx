@@ -37,7 +37,7 @@ export const EditProfileForm = ({ initialData }: EditProfileFormProps) => {
                         <p className="text-sm font-medium">Personal Information</p>
                     </div>
                     <div className="flex flex-col gap-y-8">
-                        <div className="grid font-medium grid-cols-[30%_70%] pr-2 gap-x-3 items-start rounded-md">
+                        <div className="grid font-medium grid-cols-2 gap-x-3 items-start rounded-md">
                             <FormField
                                 control={form.control}
                                 name="firstName"
@@ -65,7 +65,7 @@ export const EditProfileForm = ({ initialData }: EditProfileFormProps) => {
                                 )}
                             />
                         </div>
-                        <div className="grid font-medium grid-cols-[30%_70%] gap-x-3 items-start rounded-md">
+                        <div className="grid font-medium grid-cols-2 gap-x-3 items-start rounded-md">
                             <FormField
                                 control={form.control}
                                 name="email"

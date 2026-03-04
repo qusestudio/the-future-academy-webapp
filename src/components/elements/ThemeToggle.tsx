@@ -12,7 +12,7 @@ export function ThemeToggle() {
     };
 
     return (
-        <Button variant="outline" size="icon" className="px-2" onClick={toggleTheme}>
+        <Button variant="outline" size="icon" className="px-2 hover:cursor-pointer" onClick={toggleTheme}>
             {theme === "light" && <Sun className="h-[1.2rem] w-[1.2rem]" />}
             {theme === "dark" && <Moon className="h-[1.2rem] w-[1.2rem]" />}
             {theme === "system" && <span className="text-xs">SYS</span>}

@@ -10,19 +10,13 @@ import {
     SidebarMenuItem,
     useSidebar
 } from "@/components/ui/sidebar";
-import {Book, CircuitBoard, Library, Menu, Settings, X} from "lucide-react";
+import {Menu, X} from "lucide-react";
 import {cn} from "@/lib/utils";
 import Link from "next/link";
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuSeparator,
-    DropdownMenuTrigger
-} from "@/components/ui/dropdown-menu";
-import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
 import {useGetAuthUserQuery} from "@/state/api";
 import {signOut} from "@aws-amplify/auth";
+import {DeskIcon, Knowledge01Icon, Settings03Icon} from "@hugeicons/core-free-icons";
+import {HugeiconsIcon} from "@hugeicons/react";
 
 const AppSidebar = ({userType}: AppSidebarProps) => {
     const pathname = usePathname();
@@ -37,19 +31,19 @@ const AppSidebar = ({userType}: AppSidebarProps) => {
 
     const navLinks = userType === "instructor"
         ? [
-            {icon: Book, label: "Subjects", href: "/instructors/subjects"},
-            {icon: Settings, label: "Settings", href: "/instructors/settings"},
+            {icon: Knowledge01Icon, label: "Subjects", href: "/instructors/subjects"},
+            {icon: Knowledge01Icon, label: "Settings", href: "/instructors/settings"},
         ]
         : [
-            {icon: Library, label: "My learning", href: "/students/mylearning"},
-            {icon: CircuitBoard, label: "Enrollments", href: "/students/enrollments"},
-            {icon: Settings, label: "Settings", href: "/students/settings/profile"},
+            {icon: DeskIcon, label: "My learning", href: "/mylearning"},
+            {icon: Knowledge01Icon, label: "Enrollments", href: "/enrollments"},
+            {icon: Settings03Icon, label: "Settings", href: "/settings"},
         ];
 
     return (
         <Sidebar
-            collapsible="icon"
-            className="fixed left-0  border-r-black border-r-3 shadow-lg"
+            collapsible="offcanvas"
+            className="fixed left-0 shadow-lg "
 
         >
             <SidebarHeader>
@@ -60,25 +54,25 @@ const AppSidebar = ({userType}: AppSidebarProps) => {
                             open ? "justify-between px-6" : "justify-center"
                         )}>
                             {
-                                open? (
+                                open ? (
                                         <>
-                                            <h1 className="text-primary-900">
-                                                {userType === "instructor" ? "Instructor View": "Student View"}
+                                            <h1 className="uppercase text-xs font-bold">
+                                                the future academy
                                             </h1>
                                             <button
-                                                className="hover:bg-gray-100 p-2 rounded-md"
-                                                onClick={()=> toggleSidebar()}
+                                                className=" p-1 hover:cursor-pointer hover:bg-[#22262E] text-primary-200 rounded"
+                                                onClick={() => toggleSidebar()}
                                             >
-                                                <X className="h-6 w-6 text-gray-600" />
+                                                <X className="h-5 w-5  "/>
                                             </button>
                                         </>
                                     ) :
                                     (
                                         <button
-                                            className="hover:bg-gray-100 p-2 rounded-md"
-                                            onClick={()=> toggleSidebar()}
+                                            className="hover:bg-[#] p-2 rounded-md"
+                                            onClick={() => toggleSidebar()}
                                         >
-                                            <Menu className="h-6 w-6 text-gray-600" />
+                                            <Menu className="h-6 w-6 text-gray-600"/>
                                         </button>
                                     )
                             }
@@ -86,26 +80,34 @@ const AppSidebar = ({userType}: AppSidebarProps) => {
                     </SidebarMenuItem>
                 </SidebarMenu>
             </SidebarHeader>
-            <SidebarContent className={`flex flex-col text-xs  justify-between pb-5 ${open? "px-4" : "" }`}>
-                <SidebarMenu className="space-y-1">
+            <SidebarContent className={`flex flex-col  text-xs  pt-5 justify-between pb-5 ${open ? "px-4" : ""}`}>
+                <SidebarMenu className="space-y-3">
                     {navLinks.map((link) => {
-                        const isActive = pathname === link.href || pathname.includes("/instructors/"+link.href);
+
+                        const isActive = pathname.startsWith('/students' + link.href)  || pathname.includes("/instructors/" + link.href);
+
                         return (
                             <SidebarMenuItem key={link.href}>
                                 <SidebarMenuButton
                                     asChild
                                     className={cn(
-                                        "flex rounded-md  transition-all text-xs font-medium duration-300  items-center justify-start px-2 py-5",
+                                        "flex rounded-l-none font-semibold rounded-r uppercase hover:bg-[#22282A] hover:text-[#C7D8CD] transition-all ease-out text-xs  duration-100 items-center justify-start px-4 py-5",
                                         isActive
-                                            ? "dark:bg-[#942D00] bg-[#eee]"
-                                            : " border-transparent ",
-                                        open ? "" : "ml-[5px]"
+                                            ? "dark:bg-transparent from-[#1A1D23] to-[#15181D]\n" +
+                                            "dark:text-[#9FB8A5]\n" +
+                                            "border-l-3 border-[#4F6357] bg-[#eee]"
+                                            : " border-transparent",
+                                        open ? "" : "ml-1.25"
                                     )}
                                 >
-                                    <Link href={link.href} className={`w-full ${isActive ? "" : ""}`} scroll={false}>
+                                    <Link href={'/students'+link.href} className={`w-full`} scroll={false}>
                                         <div className="flex items-center gap-3">
-                                            <link.icon className={`h-5 w-5 ${isActive ? "" : ""}`}/>
-                                                {link.label}
+                                            <HugeiconsIcon
+                                                stroke={"3"}
+                                                icon={link.icon}
+                                                className={`h-5 stroke-3 w-5`}
+                                            />
+                                            {link.label}
                                         </div>
                                     </Link>
                                 </SidebarMenuButton>
@@ -113,57 +115,6 @@ const AppSidebar = ({userType}: AppSidebarProps) => {
                         )
                     })}
                 </SidebarMenu>
-
-                {/*{*/}
-                {/*    authUser && (*/}
-                {/*        <DropdownMenu modal={false}>*/}
-                {/*            <DropdownMenuTrigger className="flex px-1 bg-primary-100 py-1 rounded-full items-center gap-2 focus:outline-none">*/}
-                {/*                <Avatar>*/}
-                {/*                    <AvatarImage src={authUser.userInfo?.image}/>*/}
-                {/*                    <AvatarFallback className="bg-primary-600 text-white">*/}
-                {/*                        { authUser.userInfo?.name[0].toUpperCase() || authUser.userRole?.[0].toUpperCase()}*/}
-                {/*                    </AvatarFallback>*/}
-                {/*                </Avatar>*/}
-                {/*                <p className="text-black capitalize text-sm">*/}
-                {/*                    {authUser.userInfo?.name || "Profile"}*/}
-                {/*                </p>*/}
-                {/*            </DropdownMenuTrigger>*/}
-                {/*            <DropdownMenuContent className="bg-white text-primary-700">*/}
-                {/*                <DropdownMenuItem*/}
-                {/*                    className="cursor-pointer hover:bg-primary-700 hover:text-primary-100 font-bold"*/}
-                {/*                    onClick={() => {*/}
-                {/*                        router.push(*/}
-                {/*                            authUser.userRole?.toLowerCase() === "instructor"*/}
-                {/*                                ? "/instructors/subjects"*/}
-                {/*                                : "/students/mylearning",*/}
-                {/*                            { scroll: false }*/}
-                {/*                        )*/}
-                {/*                    }}*/}
-                {/*                >*/}
-                {/*                    Go to Dashboard*/}
-                {/*                </DropdownMenuItem>*/}
-                {/*                <DropdownMenuSeparator className="bg-primary-200" />*/}
-                {/*                <DropdownMenuItem*/}
-                {/*                    className="cursor-pointer hover:bg-primary-700 hover:text-primary-100"*/}
-                {/*                    onClick={() => {*/}
-                {/*                        router.push(`${authUser.userRole?.toLowerCase()}s/settings`,*/}
-                {/*                            {scroll:false}*/}
-                {/*                        )*/}
-                {/*                    }}*/}
-                {/*                >*/}
-                {/*                    Settings*/}
-                {/*                </DropdownMenuItem>*/}
-                {/*                <DropdownMenuSeparator className="bg-primary-200" />*/}
-                {/*                <DropdownMenuItem*/}
-                {/*                    className="cursor-pointer hover:bg-primary-700 hover:text-primary-100"*/}
-                {/*                    onClick={handleSignOut}*/}
-                {/*                >*/}
-                {/*                    Sign out*/}
-                {/*                </DropdownMenuItem>*/}
-                {/*            </DropdownMenuContent>*/}
-                {/*        </DropdownMenu>*/}
-                {/*    )*/}
-                {/*}*/}
             </SidebarContent>
         </Sidebar>
     )

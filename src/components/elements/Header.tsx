@@ -53,7 +53,7 @@ export function Header() {
                         Pricing
                     </Link>
                 </nav>
-                <Link href={"/signin"} className="flex bg-[#942D00] text-white rounded-xs px-10 font-medium py-2 text-xs gap-x-5 uppercase">
+                <Link href={"/signin"} className="flex bg-[#4F6357] text-white rounded-xs px-10 font-medium py-2 text-xs gap-x-5 uppercase">
                     Log in
                 </Link>
             </header>

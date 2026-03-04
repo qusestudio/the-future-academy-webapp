@@ -37,7 +37,7 @@ const BillingSettings = () => {
     }
 
     return (
-        <main className="w-full py-5 flex-col flex gap-y-5">
+        <main className="w-full p-4 bg-sidebar rounded-sm flex-col flex gap-y-5">
             <p className="font-medium">
                 Billing & Payments
             </p>

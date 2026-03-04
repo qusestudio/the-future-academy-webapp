@@ -3,13 +3,14 @@
 import React, {useEffect, useState} from 'react'
 import {useGetAuthProfileQuery, useGetAuthUserQuery} from "@/state/api";
 import AppSidebar from "@/components/elements/AppSidebar";
-import {usePathname, useRouter} from "next/navigation";
+import {redirect, usePathname, useRouter} from "next/navigation";
 import {SidebarInset, SidebarProvider, SidebarTrigger} from "@/components/ui/sidebar";
 import {Separator} from "@/components/ui/separator";
+import Auth from "@/app/(auth)/Auth";
 
 const DashboardLayout = ({children}: { children: React.ReactNode }) => {
     const {data: authUser, isLoading: authLoading} = useGetAuthUserQuery();
-    const {data: studentProfile, isLoading: profileLoading } = useGetAuthProfileQuery();
+    const {data: studentProfile, isLoading: profileLoading} = useGetAuthProfileQuery();
 
     const router = useRouter();
     const pathname = usePathname();
@@ -17,7 +18,7 @@ const DashboardLayout = ({children}: { children: React.ReactNode }) => {
 
 
     useEffect(() => {
-        if(!profileLoading) {
+        if (!profileLoading) {
             if (authUser && !studentProfile) {
                 router.push("/onboarding");
             }
@@ -36,12 +37,12 @@ const DashboardLayout = ({children}: { children: React.ReactNode }) => {
                         : "/students/mylearning"
                 )
             } else {
-                setIsLoading(false)
+                setIsLoading(false);
             }
         }
-    }, [authUser, router, pathname, studentProfile]);
+    }, [authUser, router, pathname, studentProfile, profileLoading]);
 
-    if (authLoading  || profileLoading) {
+    if (authLoading || profileLoading) {
         return (
             <div className="w-full items-center justify-center h-screen gap-y-5 flex flex-col">
                 <p className="text-lg font-medium">Loading...</p>
@@ -49,24 +50,24 @@ const DashboardLayout = ({children}: { children: React.ReactNode }) => {
         )
     }
 
-    if (!authUser?.userRole) return null;
+    if (!authUser) return null;
 
     return (
         <SidebarProvider className="overflow-x-hidden">
-                <AppSidebar userType={authUser.userRole.toLowerCase()}/>
-                <SidebarInset className="h-screen">
-                    <header className="flex h-[7vh] shrink-0 items-center gap-2 border-b-2 border-black px-4">
-                        <SidebarTrigger className="-ml-1" />
-                        <Separator
-                            orientation="vertical"
-                            className="mr-2 data-[orientation=vertical]:h-4"
-                        />
-                        <p className="font-medium">{studentProfile?.firstName}</p>
-                    </header>
-                    <div className="flex w-full items-center h-[80vh] flex-1 flex-col gap-4 px-6">
-                        {children}
-                    </div>
-                </SidebarInset>
+            <AppSidebar userType={authUser.userRole.toLowerCase()}/>
+            <SidebarInset className="h-screen">
+                <header className="flex h-[7vh] shrink-0 items-center gap-2 border-b-2  px-4">
+                    <SidebarTrigger className="-ml-1"/>
+                    <Separator
+                        orientation="vertical"
+                        className="mr-2 data-[orientation=vertical]:h-4"
+                    />
+                    <p className="font-medium">{studentProfile?.firstName}</p>
+                </header>
+                <div className="flex w-full items-center h-[80vh] flex-1 flex-col gap-4 px-6">
+                    {children}
+                </div>
+            </SidebarInset>
         </SidebarProvider>
     )
 }

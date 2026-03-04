@@ -11,6 +11,7 @@ import {Button} from "@/components/ui/button";
 import {Calendar} from "@/components/ui/calendar";
 import {StudentProfile} from "@/types/models";
 import {useCreateProfileMutation, useGetAuthUserQuery} from "@/state/api";
+import {redirect} from "next/navigation";
 
 
 const OnboardingPage = () => {
@@ -45,8 +46,9 @@ const OnboardingPage = () => {
 
     }
 
-
-
+    if(!authUser) {
+        redirect("/signin");
+    }
 
     return (
         <main className="flex flex-col h-screen gap-y-10 items-center justify-center  px-10 py-10">
@@ -58,7 +60,7 @@ const OnboardingPage = () => {
                 transition={{duration: 0.5, ease: "easeOut"}}
                 className="flex-1 flex flex-col gap-y-10 justify-center"
             >
-                <h1 className="text-5xl max-sm:text-4xl font-semibold  text-center text-black">
+                <h1 className="text-5xl max-sm:text-4xl font-semibold  text-center ">
                     Welcome to <br className="max-sm:block hidden" /> The Future Academy!
                 </h1>
                 <section>
@@ -68,7 +70,7 @@ const OnboardingPage = () => {
                             <StepperHeader/>
                             <div className="w-100 space-y-6">
                                 <div className="space-y-4">
-                                    <Label className="text-lg w-full flex justify-center text-black">
+                                    <Label className="text-lg w-full flex justify-center ">
                                         Setting up your profile
                                     </Label>
                                     <Field>
