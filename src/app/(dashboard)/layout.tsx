@@ -3,10 +3,9 @@
 import React, {useEffect, useState} from 'react'
 import {useGetAuthProfileQuery, useGetAuthUserQuery} from "@/state/api";
 import AppSidebar from "@/components/elements/AppSidebar";
-import {redirect, usePathname, useRouter} from "next/navigation";
+import { usePathname, useRouter} from "next/navigation";
 import {SidebarInset, SidebarProvider, SidebarTrigger} from "@/components/ui/sidebar";
 import {Separator} from "@/components/ui/separator";
-import Auth from "@/app/(auth)/Auth";
 
 const DashboardLayout = ({children}: { children: React.ReactNode }) => {
     const {data: authUser, isLoading: authLoading} = useGetAuthUserQuery();
@@ -36,11 +35,9 @@ const DashboardLayout = ({children}: { children: React.ReactNode }) => {
                         ? "/instructors/subjects"
                         : "/students/mylearning"
                 )
-            } else {
-                setIsLoading(false);
             }
         }
-    }, [authUser, router, pathname, studentProfile, profileLoading]);
+    }, [authUser, router, pathname, studentProfile, profileLoading, setIsLoading]);
 
     if (authLoading || profileLoading) {
         return (

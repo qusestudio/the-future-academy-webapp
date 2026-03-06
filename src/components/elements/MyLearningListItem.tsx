@@ -27,17 +27,17 @@ const MyLearningListItem = ({itemProps, onStart}: { itemProps: StudentEnrollment
 
 
     return (
-        <div className="w-full items-end hover:cursor-pointer hover:shadow-lg transition-all duration-300 flex gap-x-5 justify-between border-2 p-4 rounded-md">
-            <div className="flex gap-x-5 items-center">
+        <div className="w-full items-end max-sm:flex-col gap-y-2 hover:cursor-pointer hover:shadow-lg transition-all duration-300 flex gap-x-5 justify-between border-2 p-4 max-sm:p-2 rounded-md">
+            <div className="flex w-full max-sm:px-3 gap-x-4 items-center">
                 <HugeiconsIcon icon={icon} />
-                <p className="flex font-medium flex-col">
+                <p className="flex font-medium  flex-col">
                     <span>{itemProps.subjectTitle}</span>
                     <span className="text-xs">Grade {itemProps.grade}</span>
                 </p>
             </div>
             <Button
                 onClick={onStart}
-                className="text-xs hover:cursor-pointer transition-all duration-300 bg-sidebar-accent-foreground hover:bg-[#4F6357]/70 rounded-xs"
+                className="text-xs hover:cursor-pointer max-sm:w-full transition-all duration-300 bg-sidebar-accent-foreground hover:bg-sidebar-accent-foreground/70 rounded-xs"
             >
                 Start Learning
             </Button>

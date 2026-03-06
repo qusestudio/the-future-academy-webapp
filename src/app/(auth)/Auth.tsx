@@ -4,7 +4,7 @@ import {Amplify} from "aws-amplify";
 import {Authenticator, Heading, Radio, RadioGroupField, useAuthenticator, View} from "@aws-amplify/ui-react";
 import {usePathname, useRouter} from "next/navigation";
 import React, {useEffect} from "react";
-import {useGetAuthUserQuery} from "@/state/api";
+import {useGetAuthProfileQuery, useGetAuthUserQuery} from "@/state/api";
 
 Amplify.configure({
     Auth: {
@@ -137,9 +137,10 @@ const formFields = {
     }
 }
 
-const Auth = ({children}:{children: React.ReactNode}) =>  {
-    const { user } = useAuthenticator((context) => [context.user]);
-    const { data: authUser, isLoading } = useGetAuthUserQuery();
+const Auth = ({children}: { children: React.ReactNode }) => {
+    const {user} = useAuthenticator((context) => [context.user]);
+    const {data: authUser, isLoading: authLoading} = useGetAuthUserQuery();
+    const {data: profile, isLoading} = useGetAuthProfileQuery();
     const router = useRouter();
     const pathname = usePathname();
 
@@ -150,16 +151,24 @@ const Auth = ({children}:{children: React.ReactNode}) =>  {
 
     //Redirect authenticated users away from auth pages
     useEffect(() => {
-            if (user && isAuthPage) {
+        if (user && authUser && isAuthPage) {
+            if (!profile) {
                 router.push(
-                    '/home',
+                    '/onboarding',
                 );
+            } else {
+                router.push(`${authUser!.userRole === "student" ? "/students/mylearning" : "/instructors/subjects"}`)
             }
+        }
 
-    }, [user, isAuthPage, router, isOnboardingPage, isLoading, authUser]);
+    }, [user, authUser, authLoading,isAuthPage, router, isOnboardingPage, isLoading, profile]);
+
+    if(authLoading || isLoading) {
+        return <div className="w-full h-full items-center justify-center flex-col flex">Loading...</div>
+    }
 
     // Allow access to public pages without authentication
-    if (!isAuthPage && !isDashboardPage) {
+    if (!isAuthPage && !isDashboardPage && !isOnboardingPage) {
         return <>{children}</>;
     }
 
@@ -170,7 +179,7 @@ const Auth = ({children}:{children: React.ReactNode}) =>  {
                 formFields={formFields}
                 initialState={pathname.includes("signup") ? "signUp" : "signIn"}
             >
-                {()=> <>{children}</>}
+                {() => <>{children}</>}
             </Authenticator>
         </div>
     )

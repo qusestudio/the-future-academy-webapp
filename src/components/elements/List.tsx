@@ -1,10 +1,9 @@
 "use client"
 
-import React, {useState} from 'react';
-import {Enrollment, Lesson, NotEnrolled, Subject, Topic} from "@/types/models";
+import React from 'react';
+import {Lesson, NotEnrolled, Subject, Topic} from "@/types/models";
 import {Button} from "@/components/ui/button";
-import {Dot, LayoutDashboardIcon, PlayIcon} from "lucide-react";
-import {useGetEnrollmentQuery} from "@/state/api";
+import {Dot, PlayIcon} from "lucide-react";
 import {BoardMathIcon, CellsIcon, Prism01Icon, TestTube01Icon, ThreeDViewIcon} from "@hugeicons/core-free-icons";
 import {HugeiconsIcon} from "@hugeicons/react";
 

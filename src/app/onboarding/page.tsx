@@ -1,6 +1,6 @@
 "use client"
 
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Step, Stepper, StepperFooter, StepperHeader} from "@/components/elements/Stepper";
 import {Label} from "@/components/ui/label";
 import {Input} from "@/components/ui/input";
@@ -10,13 +10,16 @@ import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover";
 import {Button} from "@/components/ui/button";
 import {Calendar} from "@/components/ui/calendar";
 import {StudentProfile} from "@/types/models";
-import {useCreateProfileMutation, useGetAuthUserQuery} from "@/state/api";
-import {redirect} from "next/navigation";
+import {useCreateProfileMutation, useGetAuthProfileQuery, useGetAuthUserQuery, useGetProfileQuery} from "@/state/api";
+import {redirect, useRouter} from "next/navigation";
 
 
 const OnboardingPage = () => {
+    const router = useRouter();
     const [createProfile] = useCreateProfileMutation();
     const {data: authUser, isLoading} = useGetAuthUserQuery();
+
+    const {data: profile, isLoading: profileLoading} = useGetAuthProfileQuery();
 
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
@@ -25,6 +28,12 @@ const OnboardingPage = () => {
     const [open, setOpen] = React.useState(false)
     const [date, setDate] = React.useState<Date | undefined>(undefined);
 
+
+    useEffect(() => {
+        if(profile && authUser) {
+            router.push(`${authUser!.userRole==="student" ? "/students/mylearning" : "/instructors/subjects"}`);
+        }
+    }, [profile, authUser, router]);
 
 
     // create account
@@ -46,8 +55,8 @@ const OnboardingPage = () => {
 
     }
 
-    if(!authUser) {
-        redirect("/signin");
+    if(profileLoading || isLoading) {
+        return <div className="w-full h-full items-center justify-center flex-col flex">Loading...</div>
     }
 
     return (
