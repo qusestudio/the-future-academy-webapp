@@ -62,7 +62,7 @@ const DashboardLayout = ({children}: { children: React.ReactNode }) => {
                         />
                         <p className="font-medium">{studentProfile?.firstName}</p>
                     </div>
-                    <div className="px-3 py-1.5 bg-pink-950 text-xs rounded-full"><p>Test Mode</p></div>
+                    <div className="px-3 py-1.5 text-white bg-pink-950 text-xs rounded-full"><p>Test Mode</p></div>
                 </header>
                 <div className="flex w-full items-center h-[80vh] flex-1 flex-col gap-4 px-6">
                     {children}

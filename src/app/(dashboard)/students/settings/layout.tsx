@@ -30,7 +30,7 @@ const SettingsLayout = ({children}: {children: React.ReactNode}) => {
                             <Link
                                 key={index}
                                 href={"/students/settings" + link.href}
-                                className={`py-1.5 px-5 rounded-xs ${ isActive ? "bg-sidebar-accent-foreground text-primary-900 " : "" }`}
+                                className={`py-1.5 px-5 rounded-xs ${ isActive ? "bg-sidebar-accent-foreground  " : "" }`}
                             >
                                 {link.label}
                             </Link>
